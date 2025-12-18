@@ -319,14 +319,14 @@ const SessionThreeDetail = () => {
           <h4 className="text-xl font-bold mb-6 text-left border-l-4 border-[#3E7548] pl-3">課程架構核心：Effectuation vs. Causation</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
              <div className="bg-orange-50 p-6 rounded-lg text-left">
-                <h5 className="font-bold text-orange-700 mb-2">決策邏輯 (Causation)</h5>
+                <h5 className="font-bold text-orange-700 mb-2">因果邏輯 (Causation)</h5>
                 {/* 🔴 關鍵修正：把 -> 改成 → 避免語法錯誤 🔴 */}
                 <p className="text-sm text-gray-700 mb-2">預測未來 → 設定目標 → 尋找資源</p>
                 <div className="h-2 w-full bg-orange-200 rounded-full mt-2"></div>
                 <div className="h-2 w-2/3 bg-orange-200 rounded-full mt-2"></div>
              </div>
              <div className="bg-blue-50 p-6 rounded-lg text-left">
-                <h5 className="font-bold text-blue-700 mb-2">效果推理 (Effectuation)</h5>
+                <h5 className="font-bold text-blue-700 mb-2">效果邏輯 (Effectuation)</h5>
                 {/* 🔴 關鍵修正：把 -> 改成 → 避免語法錯誤 🔴 */}
                 <p className="text-sm text-gray-700 mb-2">盤點現有手段 → 創造機會 → 控制風險</p>
                 <div className="h-2 w-full bg-blue-200 rounded-full mt-2"></div>
