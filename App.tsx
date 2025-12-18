@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 const Header = () => (
-  // 使用強制色碼 [#9A2A2F] 取代 wiskey-red
+  // 使用強制色碼 [#9A2A2F]
   <header className="bg-[#9A2A2F] text-white sticky top-0 z-50 shadow-lg">
     <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
       <div className="flex items-center space-x-3 mb-4 md:mb-0">
@@ -39,7 +39,7 @@ const Header = () => (
 );
 
 const Hero = () => (
-  // 使用強制色碼 [#58181B] 和 [#9A2A2F] 呈現原本的漸層
+  // 使用強制色碼 [#58181B] 和 [#9A2A2F]
   <div className="bg-gradient-to-br from-[#58181B] to-[#9A2A2F] text-white py-12 md:py-20 relative overflow-hidden">
     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
     <div className="container mx-auto px-4 relative z-10">
@@ -68,7 +68,6 @@ const SessionOneDetail = () => {
           {TOUCH_CATEGORIES.map((category, catIdx) => (
             <div key={catIdx} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                <div className="bg-gray-50 border-b border-gray-100 p-6">
-                  {/* 使用強制色碼 [#9A2A2F] */}
                   <h4 className="text-xl font-bold text-[#9A2A2F] mb-2">{category.title}</h4>
                   <p className="text-gray-500 italic text-sm">{category.description}</p>
                </div>
@@ -76,7 +75,6 @@ const SessionOneDetail = () => {
                   <ul className="space-y-6">
                     {category.students.map((student, sIdx) => (
                       <li key={sIdx} className="flex gap-4 items-start">
-                        {/* 使用強制色碼 [#9A2A2F] */}
                         <span className="text-[#9A2A2F] font-bold whitespace-nowrap pt-1">• {student.name}：</span>
                         <p className="text-gray-700 leading-relaxed bg-gray-50/50 p-4 rounded-lg border border-gray-100 flex-1">
                           {student.quote}
@@ -94,14 +92,12 @@ const SessionOneDetail = () => {
       <div className="space-y-16">
         {/* Strategy Section */}
         <section>
-          {/* 使用強制色碼 [#9A2A2F] */}
           <div className="border-b-4 border-[#9A2A2F] mb-8 pb-2">
              <h3 className="text-2xl font-bold text-gray-800">策略 (Strategy) — 從規劃到護城河</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
              {REFLECTIONS.filter(r => r.strategy).map((r, i) => (
                <div key={i} className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                  {/* 使用強制色碼 [#9A2A2F] */}
                   <div className="font-bold text-[#9A2A2F] mb-2 flex items-center">
                     <Users className="w-4 h-4 mr-2" />
                     {r.name}
@@ -307,7 +303,7 @@ const SessionThreeDetail = () => {
   return (
     <div className="space-y-10 animate-fade-in text-center py-10">
        <div className="max-w-2xl mx-auto">
-          {/* 使用強制色碼 [#3E7548] (NDHU Green) */}
+          {/* 使用強制色碼 [#3E7548] */}
           <div className="bg-[#3E7548]/10 text-[#3E7548] p-4 rounded-full inline-flex items-center mb-6">
              <Clock className="w-5 h-5 mr-2" />
              <span className="font-semibold">課程日期：2025/12/21 (日)</span>
@@ -324,13 +320,15 @@ const SessionThreeDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
              <div className="bg-orange-50 p-6 rounded-lg text-left">
                 <h5 className="font-bold text-orange-700 mb-2">決策邏輯 (Causation)</h5>
-                <p className="text-sm text-gray-700 mb-2">預測未來 -> 設定目標 -> 尋找資源</p>
+                {/* 🔴 關鍵修正：把 -> 改成 → 避免語法錯誤 🔴 */}
+                <p className="text-sm text-gray-700 mb-2">預測未來 → 設定目標 → 尋找資源</p>
                 <div className="h-2 w-full bg-orange-200 rounded-full mt-2"></div>
                 <div className="h-2 w-2/3 bg-orange-200 rounded-full mt-2"></div>
              </div>
              <div className="bg-blue-50 p-6 rounded-lg text-left">
                 <h5 className="font-bold text-blue-700 mb-2">效果推理 (Effectuation)</h5>
-                <p className="text-sm text-gray-700 mb-2">盤點現有手段 -> 創造機會 -> 控制風險</p>
+                {/* 🔴 關鍵修正：把 -> 改成 → 避免語法錯誤 🔴 */}
+                <p className="text-sm text-gray-700 mb-2">盤點現有手段 → 創造機會 → 控制風險</p>
                 <div className="h-2 w-full bg-blue-200 rounded-full mt-2"></div>
                 <div className="h-2 w-2/3 bg-blue-200 rounded-full mt-2"></div>
              </div>
@@ -417,7 +415,7 @@ function App() {
         </div>
       </main>
 
-      {/* 使用強制色碼 [#58181B] (Wiskey Dark) */}
+      {/* 使用強制色碼 [#58181B] */}
       <footer className="bg-[#58181B] text-white py-8 mt-auto">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center items-center mb-4 space-x-2">
