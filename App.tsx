@@ -28,7 +28,7 @@ const Header = () => (
         </div>
         <div>
           <h1 className="text-xl md:text-2xl font-bold tracking-tight">當代企業策略</h1>
-          <p className="text-xs md:text-sm text-red-100 opacity-90">東華大學 EMBA | 林益全 教授</p>
+          <p className="text-xs md:text-sm text-red-100 opacity-90">東華大學 EMBA | 陳建男 教授、林益全 教授</p>
         </div>
       </div>
       <div className="flex items-center space-x-6 text-sm">
