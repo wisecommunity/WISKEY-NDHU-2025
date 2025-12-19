@@ -34,6 +34,89 @@ export const SESSIONS: CourseSession[] = [
   }
 ];
 
+// spectrum: 1 = Pure Effectuation (Left), 0 = Pure Causation (Right)
+// principles val: 100 = Effectuation (Left), 0 = Causation (Right)
+export const COOKING_GROUPS = [
+  {
+    id: 1,
+    name: "第一組：[菜名預期]",
+    image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=800&auto=format&fit=crop",
+    spectrum: 0.85, 
+    principles: {
+      sourcing: 88,
+      risk: 82,
+      partnership: 90,
+      control: 85,
+      lemonade: 80
+    }
+  },
+  {
+    id: 2,
+    name: "第二組：[菜名預期]",
+    image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=800&auto=format&fit=crop",
+    spectrum: 0.35,
+    principles: {
+      sourcing: 38,
+      risk: 42,
+      partnership: 30,
+      control: 45,
+      lemonade: 28
+    }
+  },
+  {
+    id: 3,
+    name: "第三組：[菜名預期]",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
+    spectrum: 0.92,
+    principles: {
+      sourcing: 95,
+      risk: 90,
+      partnership: 96,
+      control: 88,
+      lemonade: 94
+    }
+  },
+  {
+    id: 4,
+    name: "第四組：[菜名預期]",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop",
+    spectrum: 0.15,
+    principles: {
+      sourcing: 18,
+      risk: 22,
+      partnership: 12,
+      control: 25,
+      lemonade: 10
+    }
+  },
+  {
+    id: 5,
+    name: "第五組：[菜名預期]",
+    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop",
+    spectrum: 0.65,
+    principles: {
+      sourcing: 68,
+      risk: 62,
+      partnership: 75,
+      control: 60,
+      lemonade: 72
+    }
+  },
+  {
+    id: 6,
+    name: "第六組：[菜名預期]",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop",
+    spectrum: 0.78,
+    principles: {
+      sourcing: 82,
+      risk: 76,
+      partnership: 85,
+      control: 74,
+      lemonade: 88
+    }
+  }
+];
+
 export const TOUCH_CATEGORIES = [
   {
     title: "1. 認知覺察與批判性思考 (Cognitive Awakening)",
