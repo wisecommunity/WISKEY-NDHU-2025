@@ -29,7 +29,7 @@ export const SESSIONS: CourseSession[] = [
     time: '10:00 - 16:00',
     format: '實體',
     status: SessionStatus.PLANNING,
-    description: '基於因果效果邏輯的課程設計，包含實體互動與影音訪談紀錄。',
+    description: '共創廚房的決策邏輯分析：透過實體烹飪競賽，拆解因果與效果邏輯的應用。',
     themeColor: 'bg-emerald-700'
   }
 ];
