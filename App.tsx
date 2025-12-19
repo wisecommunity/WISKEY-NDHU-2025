@@ -352,59 +352,186 @@ const SessionTwoDetail = () => {
   );
 };
 
+const GroupMatrix = () => {
+  return (
+    <section className="mt-16 md:mt-24">
+      <div className="text-center mb-10 md:mb-16">
+        <div className="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full mb-4">
+          <Radar className="w-5 h-5" />
+          <span className="font-bold">六組決策分析矩陣 (The 6-Group Matrix)</span>
+        </div>
+        <h3 className="text-2xl md:text-4xl font-bold text-gray-900">烹飪競賽中的決策軌跡</h3>
+        <p className="text-gray-500 mt-4 max-w-2xl mx-auto">透視各組在「共創料理」過程中的邏輯偏向，從光譜到細部原則的深度偵測。</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {COOKING_GROUPS.map((group) => (
+          <div key={group.id} className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-500">
+            {/* Dish Image */}
+            <div className="relative aspect-video overflow-hidden">
+              <img 
+                src={group.image} 
+                alt={group.name} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=800&auto=format&fit=crop';
+                }}
+              />
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-emerald-800 shadow-sm">
+                Group {group.id}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 md:p-8 flex-1 flex flex-col">
+              <h4 className="text-xl font-bold text-gray-900 mb-6">{group.name}</h4>
+
+              {/* Main Spectrum UI - Orientation logic, not a score */}
+              <div className="mb-8">
+                <div className="flex justify-between text-[10px] md:text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">
+                  <span>效果導向 (Effectuation)</span>
+                  <span>因果導向 (Causation)</span>
+                </div>
+                <div className="h-4 bg-gray-100 rounded-full relative">
+                  <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-400 via-gray-200 to-green-500 opacity-20 w-full"></div>
+                  {/* Indicator Triangle - Swapped position logic (1 - spectrum) to put Effectuation(1) on left(0) */}
+                  <div 
+                    className="absolute top-0 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-emerald-600 transition-all duration-1000 ease-out z-10"
+                    style={{ left: `calc(${(1 - group.spectrum) * 100}% - 8px)` }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Principles Radar - Represented as Orientation Sliders, not progress bars */}
+              <div className="space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                <div className="text-xs font-bold text-gray-400 mb-2 flex items-center">
+                  <Eye className="w-3 h-3 mr-1" /> 五大原則偏向偵測
+                </div>
+                
+                {[
+                  { label: "食材取得", icon: Flame, val: group.principles.sourcing },
+                  { label: "風險控管", icon: ShieldCheck, val: group.principles.risk },
+                  { label: "競爭or合作", icon: Handshake, val: group.principles.partnership },
+                  { label: "控制or預測", icon: Navigation, val: group.principles.control },
+                  { label: "因應變局", icon: Zap, val: group.principles.lemonade },
+                ].map((p, idx) => {
+                  const biasColor = p.val > 50 ? 'bg-blue-500' : p.val < 50 ? 'bg-green-500' : 'bg-gray-400';
+                  const textColor = p.val > 50 ? 'text-blue-700' : p.val < 50 ? 'text-green-700' : 'text-gray-500';
+
+                  return (
+                    <div key={idx} className="flex items-center space-x-3">
+                      <p.icon className={`w-4 h-4 shrink-0 ${p.val > 50 ? 'text-blue-500' : 'text-green-500'}`} />
+                      <div className="flex-1">
+                        <div className="flex justify-between text-[10px] font-bold mb-1">
+                          <span className="text-gray-600">{p.label}</span>
+                          <span className={`text-[8px] uppercase ${textColor}`}>
+                            {p.val > 50 ? '效果傾向' : p.val < 50 ? '因果傾向' : '中性'}
+                          </span>
+                        </div>
+                        <div className="h-2 w-full bg-gray-200 rounded-full relative overflow-hidden">
+                          {/* Track logic: Left is Blue (Effectuation), Right is Green (Causation) */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-green-100 opacity-50"></div>
+                          {/* Indicator Dot (100 - val)% positioning to align with Left=Effectuation logic */}
+                          <div 
+                            className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border border-white shadow-sm transition-all duration-1000 delay-300 ${biasColor}`}
+                            style={{ left: `calc(${(100 - p.val)}% - 6px)` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+  );
+};
+
 const SessionThreeDetail = () => {
   return (
-    <div className="space-y-8 md:space-y-10 animate-fade-in text-center py-6 md:py-10">
+    <div className="space-y-8 md:space-y-12 animate-fade-in text-center py-6 md:py-10">
        <div className="max-w-2xl mx-auto px-4">
           <div className="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full inline-flex items-center mb-4 md:mb-6">
              <Clock className="w-4 h-4 md:w-5 md:h-5 mr-2" />
              <span className="font-semibold text-xs md:text-base">課程日期：2025/12/21 (日)</span>
           </div>
-          <h3 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">競爭對抗與動態競爭</h3>
+          <h3 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">廚房裡的孫子兵法：共創料理的決策邏輯分析</h3>
           <p className="text-sm md:text-lg text-gray-600 mb-6 md:mb-8">
             本堂課程將以實體形式進行。課程設計核心圍繞「因果效果邏輯」，
-            並將透過 30 位同學的實際訪談影片，呈現最真實的策略激盪。
+            並將透過烹飪實作中的動態競爭，呈現最具生命力的策略激盪。
           </p>
        </div>
 
-       <div className="max-w-4xl mx-auto bg-white p-5 md:p-8 rounded-2xl shadow-xl border border-gray-100 mx-4">
-          <h4 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-left border-l-4 border-emerald-500 pl-3">課程架構核心：Effectuation vs. Causation</h4>
+       {/* Swapped and Recolored Core Framework */}
+       <div className="max-w-4xl mx-auto bg-white p-5 md:p-8 rounded-2xl shadow-xl border border-gray-100">
+          <div className="text-center mb-6 md:mb-8">
+            <h4 className="text-lg md:text-xl font-bold inline-block pb-2 border-b-4 border-emerald-500 uppercase tracking-wide">課程架構核心</h4>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-             <div className="bg-orange-50 p-4 md:p-6 rounded-lg text-left">
-                <h5 className="font-bold text-orange-700 mb-2 text-sm md:text-base">因果邏輯 (Causation)</h5>
-                <p className="text-[10px] md:text-sm text-gray-700 mb-2">預測未來 → 設定目標 → 尋找資源</p>
-                <div className="h-1.5 w-full bg-orange-200 rounded-full mt-2"></div>
-                <div className="h-1.5 w-2/3 bg-orange-200 rounded-full mt-2"></div>
+             {/* Effectuation - Left, Blue */}
+             <div className="bg-blue-50 p-6 md:p-8 rounded-3xl text-left border border-blue-100 shadow-sm">
+                <div className="flex items-center mb-4">
+                   <div className="bg-blue-600 p-2 rounded-xl mr-3">
+                      <Zap className="w-5 h-5 text-white" />
+                   </div>
+                   <h5 className="font-bold text-blue-800 text-lg md:text-xl">效果邏輯 (Effectuation)</h5>
+                </div>
+                <p className="text-sm md:text-base text-blue-900 font-medium leading-relaxed mb-4">
+                  盤點現有手段 → 創造機會 → 控制風險
+                </p>
+                <div className="space-y-2 opacity-60">
+                   <div className="h-1.5 w-full bg-blue-200 rounded-full"></div>
+                   <div className="h-1.5 w-3/4 bg-blue-200 rounded-full"></div>
+                   <div className="h-1.5 w-1/2 bg-blue-200 rounded-full"></div>
+                </div>
              </div>
-             <div className="bg-blue-50 p-4 md:p-6 rounded-lg text-left">
-                <h5 className="font-bold text-blue-700 mb-2 text-sm md:text-base">效果邏輯 (Effectuation)</h5>
-                <p className="text-[10px] md:text-sm text-gray-700 mb-2">盤點現有手段 → 創造機會 → 控制風險</p>
-                <div className="h-1.5 w-full bg-blue-200 rounded-full mt-2"></div>
-                <div className="h-1.5 w-2/3 bg-blue-200 rounded-full mt-2"></div>
+
+             {/* Causation - Right, Green */}
+             <div className="bg-green-50 p-6 md:p-8 rounded-3xl text-left border border-green-100 shadow-sm">
+                <div className="flex items-center mb-4">
+                   <div className="bg-green-600 p-2 rounded-xl mr-3">
+                      <Target className="w-5 h-5 text-white" />
+                   </div>
+                   <h5 className="font-bold text-green-800 text-lg md:text-xl">因果邏輯 (Causation)</h5>
+                </div>
+                <p className="text-sm md:text-base text-green-900 font-medium leading-relaxed mb-4">
+                  預測未來 → 設定目標 → 尋找資源
+                </p>
+                <div className="space-y-2 opacity-60">
+                   <div className="h-1.5 w-full bg-green-200 rounded-full"></div>
+                   <div className="h-1.5 w-3/4 bg-green-200 rounded-full"></div>
+                   <div className="h-1.5 w-1/2 bg-green-200 rounded-full"></div>
+                </div>
              </div>
           </div>
        </div>
 
-       <div className="max-w-5xl mx-auto mt-8 md:mt-12 px-4">
-          <div className="flex items-center justify-between mb-4 md:mb-6">
-             <h4 className="text-lg md:text-xl font-bold text-gray-900 flex items-center">
-               <Video className="w-5 h-5 mr-2 text-emerald-600" />
-               學員訪談紀錄 (預覽)
+       {/* New 6-Group Matrix Section */}
+       <GroupMatrix />
+
+       {/* Existing Videos Section */}
+       <div className="max-w-5xl mx-auto mt-16 md:mt-24 px-4 pb-12">
+          <div className="flex items-center justify-between mb-8">
+             <h4 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center">
+               <Video className="w-6 h-6 mr-2 text-emerald-600" />
+               實作與訪談紀錄
              </h4>
-             <span className="text-[10px] md:text-sm text-emerald-600 font-medium bg-emerald-50 px-3 py-1 rounded-full">Coming Soon</span>
+             <span className="text-xs md:text-sm text-emerald-600 font-bold bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100">2025/12/21 即將錄製</span>
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 opacity-70">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 opacity-50">
              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="aspect-[9/16] bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden group">
-                   <MonitorPlay className="w-6 h-6 md:w-8 md:h-8 text-gray-400 group-hover:text-emerald-500 transition-colors" />
-                   <div className="absolute inset-x-0 bottom-0 bg-black/50 p-1 md:p-2">
-                      <div className="h-1 w-10 md:w-16 bg-gray-400 rounded"></div>
+                <div key={i} className="aspect-[9/16] bg-gray-200 rounded-2xl flex items-center justify-center relative overflow-hidden group border border-gray-300">
+                   <MonitorPlay className="w-8 h-8 text-gray-400 group-hover:text-emerald-500 transition-colors" />
+                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                      <div className="h-1.5 w-16 bg-white/40 rounded-full"></div>
                    </div>
                 </div>
              ))}
-             <div className="aspect-[9/16] bg-gray-100 rounded-lg flex flex-col items-center justify-center text-gray-400 text-[10px] p-1 border-2 border-dashed border-gray-300">
-                <span>+ 20 More</span>
-                <span>Interviews</span>
+             <div className="aspect-[9/16] bg-gray-100 rounded-2xl flex flex-col items-center justify-center text-gray-400 text-xs p-4 border-2 border-dashed border-gray-300">
+                <span className="font-bold">更多紀錄</span>
+                <span className="mt-1">等待精彩瞬間...</span>
              </div>
           </div>
        </div>
@@ -480,5 +607,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
