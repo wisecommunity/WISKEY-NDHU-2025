@@ -12,7 +12,7 @@ export interface StudentReflection {
 export enum SessionStatus {
   COMPLETED = '已結束',
   UPCOMING = '即將開始',
-  PLANNING = '規劃中'
+  PLANNING = '建置中'
 }
 
 export interface CourseSession {
