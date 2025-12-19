@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { SESSIONS, REFLECTIONS, TOUCH_CATEGORIES, TOUCH_CATEGORIES_SESSION_2 } from './constants';
+import { SESSIONS, REFLECTIONS, TOUCH_CATEGORIES, TOUCH_CATEGORIES_SESSION_2, COOKING_GROUPS } from './constants';
 import { SessionStatus } from './types';
 import { 
   Users, 
@@ -16,7 +16,15 @@ import {
   MonitorPlay,
   BrainCircuit,
   Award,
-  Quote
+  Quote,
+  Flame,
+  Scale,
+  Radar,
+  Eye,
+  Settings,
+  ShieldCheck,
+  Handshake,
+  Navigation
 } from 'lucide-react';
 
 const Header = () => (
@@ -49,7 +57,7 @@ const Hero = () => (
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-2xl md:text-5xl font-bold mb-4 md:mb-6">不確定環境下的決策與領導</h2>
         <p className="text-sm md:text-xl text-red-100 mb-2 md:mb-8 leading-relaxed px-4">
-          探索 AI 時代的策略思維，從創業家精神到動態競爭。
+          探索 AI 時代的策略思維，從創業家精神到動態競爭.
           <br className="hidden md:block"/>
           三堂深度課程，紀錄我們共同的學習軌跡。
         </p>
@@ -607,4 +615,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
