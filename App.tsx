@@ -423,12 +423,14 @@ const GroupMatrix = () => {
                   { label: "控制or預測", icon: Navigation, val: group.principles.control },
                   { label: "因應變局", icon: Zap, val: group.principles.lemonade },
                 ].map((p, idx) => {
+                  const Icon = p.icon;
                   const biasColor = p.val > 50 ? 'bg-blue-500' : p.val < 50 ? 'bg-green-500' : 'bg-gray-400';
                   const textColor = p.val > 50 ? 'text-blue-700' : p.val < 50 ? 'text-green-700' : 'text-gray-500';
 
                   return (
                     <div key={idx} className="flex items-center space-x-3">
-                      <p.icon className={`w-4 h-4 shrink-0 ${p.val > 50 ? 'text-blue-500' : 'text-green-500'}`} />
+                      
+                       <Icon className={`w-4 h-4 shrink-0 ${p.val > 50 ? 'text-blue-500' : 'text-green-500'}`} /> 
                       <div className="flex-1">
                         <div className="flex justify-between text-[10px] font-bold mb-1">
                           <span className="text-gray-600">{p.label}</span>
