@@ -415,6 +415,7 @@ const GroupMatrix = () => {
                 <div className="text-xs font-bold text-gray-400 mb-2 flex items-center">
                   <Eye className="w-3 h-3 mr-1" /> 五大原則偏向偵測
                 </div>
+                </div>
                 
                {[
                   { label: "食材取得", icon: Flame, val: group.principles.sourcing },
