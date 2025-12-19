@@ -423,6 +423,7 @@ const GroupMatrix = () => {
                   { label: "控制or預測", icon: Navigation, val: group.principles.control },
                   { label: "因應變局", icon: Zap, val: group.principles.lemonade },
                 ].map((p, idx) => {
+                  const Icon = item.icon; 
                   const biasColor = p.val > 50 ? 'bg-blue-500' : p.val < 50 ? 'bg-green-500' : 'bg-gray-400';
                   const textColor = p.val > 50 ? 'text-blue-700' : p.val < 50 ? 'text-green-700' : 'text-gray-500';
 
