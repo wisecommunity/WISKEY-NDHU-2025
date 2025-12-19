@@ -422,34 +422,33 @@ const GroupMatrix = () => {
                   { label: "競爭or合作", icon: Handshake, val: group.principles.partnership },
                   { label: "控制or預測", icon: Navigation, val: group.principles.control },
                   { label: "因應變局", icon: Zap, val: group.principles.lemonade },
-                ].map((p, idx) => {
-                  const Icon = item.icon; 
-                  const biasColor = p.val > 50 ? 'bg-blue-500' : p.val < 50 ? 'bg-green-500' : 'bg-gray-400';
-                  const textColor = p.val > 50 ? 'text-blue-700' : p.val < 50 ? 'text-green-700' : 'text-gray-500';
-
+                ].map((item, idx) => {
+                  const Icon = item.icon;
+                  const biasColor = item.val > 50 ? 'bg-blue-500' : item.val < 50 ? 'bg-green-500' : 'bg-gray-400';
+                  const textColor = item.val > 50 ? 'text-blue-700' : item.val < 50 ? 'text-green-700' : 'text-gray-500';
+                
                   return (
                     <div key={idx} className="flex items-center space-x-3">
-                      <p.icon className={`w-4 h-4 shrink-0 ${p.val > 50 ? 'text-blue-500' : 'text-green-500'}`} />
+                      <Icon className={`w-4 h-4 shrink-0 ${item.val > 50 ? 'text-blue-500' : 'text-green-500'}`} />
                       <div className="flex-1">
                         <div className="flex justify-between text-[10px] font-bold mb-1">
-                          <span className="text-gray-600">{p.label}</span>
+                          <span className="text-gray-600">{item.label}</span>
                           <span className={`text-[8px] uppercase ${textColor}`}>
-                            {p.val > 50 ? '效果傾向' : p.val < 50 ? '因果傾向' : '中性'}
+                            {item.val > 50 ? '效果傾向' : item.val < 50 ? '因果傾向' : '中性'}
                           </span>
                         </div>
                         <div className="h-2 w-full bg-gray-200 rounded-full relative overflow-hidden">
-                          {/* Track logic: Left is Blue (Effectuation), Right is Green (Causation) */}
                           <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-green-100 opacity-50"></div>
-                          {/* Indicator Dot (100 - val)% positioning to align with Left=Effectuation logic */}
-                          <div 
+                          <div
                             className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border border-white shadow-sm transition-all duration-1000 delay-300 ${biasColor}`}
-                            style={{ left: `calc(${(100 - p.val)}% - 6px)` }}
+                            style={{ left: `calc(${(100 - item.val)}% - 6px)` }}
                           ></div>
                         </div>
                       </div>
                     </div>
                   );
                 })}
+
               </div>
             </div>
           ))}
