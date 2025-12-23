@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SESSIONS, REFLECTIONS, TOUCH_CATEGORIES, TOUCH_CATEGORIES_SESSION_2, COOKING_GROUPS } from './constants';
 import { SessionStatus } from './types';
 import { 
@@ -24,7 +24,9 @@ import {
   Settings,
   ShieldCheck,
   Handshake,
-  Navigation
+  Navigation,
+  X,
+  Loader2
 } from 'lucide-react';
 
 const Header = () => (
@@ -66,6 +68,53 @@ const Hero = () => (
   </div>
 );
 
+const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: () => void, videoId: string }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      setIsLoading(true);
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-2 md:p-10 animate-fade-in backdrop-blur-sm">
+      <button 
+        onClick={onClose} 
+        className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-white p-2 z-[10001] bg-white/10 rounded-full transition-all hover:rotate-90"
+        aria-label="Close"
+      >
+        <X className="w-8 h-8 md:w-10 md:h-10" />
+      </button>
+      
+      <div className="relative w-full max-w-5xl bg-black rounded-xl md:rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 flex flex-col justify-center">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
+            <div className="flex flex-col items-center">
+               <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mb-4" />
+               <p className="text-emerald-500/80 font-medium text-sm animate-pulse">影片載入中...</p>
+            </div>
+          </div>
+        )}
+        <div className="relative w-full pt-[56.25%]">
+          <iframe
+            src={`https://drive.google.com/file/d/${videoId}/preview`}
+            className="absolute top-0 left-0 w-full h-full border-none shadow-inner"
+            allow="autoplay; fullscreen"
+            onLoad={() => setIsLoading(false)}
+            title="Video Content"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const SessionOneDetail = () => {
   const [activeTab, setActiveTab] = useState<'strategy' | 'execution' | 'choice' | 'legacy'>('strategy');
 
@@ -78,7 +127,6 @@ const SessionOneDetail = () => {
 
   return (
     <div className="space-y-8 md:space-y-16 animate-fade-in pb-12">
-      {/* 1. Touch Quotes Section - Optimized for Mobile Spacing */}
       <section>
         <div className="bg-wiskey-red text-white px-5 py-3 rounded-t-xl shadow-md inline-block mb-4 md:mb-8">
            <h3 className="text-xl md:text-2xl font-bold">課堂中最觸動您的一句發言</h3>
@@ -108,7 +156,6 @@ const SessionOneDetail = () => {
         </div>
       </section>
 
-      {/* 2. Definitions Sections - Redesigned with Tabs for Mobile Efficiency */}
       <section className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <div className="bg-gray-800 text-white p-4 md:p-6">
           <h3 className="text-xl md:text-2xl font-bold flex items-center">
@@ -118,7 +165,6 @@ const SessionOneDetail = () => {
           <p className="text-gray-400 text-xs md:text-sm mt-1">點擊下方標籤快速切換不同維度的同學見解</p>
         </div>
 
-        {/* Tab Switcher */}
         <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100 bg-gray-50 snap-x">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -141,7 +187,6 @@ const SessionOneDetail = () => {
           })}
         </div>
 
-        {/* Content Area */}
         <div className="p-4 md:p-8 min-h-[400px]">
           {activeTab === 'strategy' && (
             <div className="animate-in fade-in duration-500">
@@ -231,7 +276,6 @@ const SessionOneDetail = () => {
 const SessionTwoDetail = () => {
   return (
     <div className="space-y-8 md:space-y-12 animate-fade-in pb-12">
-      {/* Section 1: Introduction */}
       <section>
         <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
            <div className="flex-1 w-full">
@@ -271,7 +315,6 @@ const SessionTwoDetail = () => {
 
       <hr className="border-gray-200" />
 
-      {/* Section 2: Guest Speaker (Redesigned) */}
       <section className="bg-gray-900 rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-wiskey-red/10 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3"></div>
@@ -327,7 +370,6 @@ const SessionTwoDetail = () => {
         </div>
       </section>
 
-      {/* Section 3: Student Reflections for Session 2 */}
       <section className="mt-12 md:mt-16">
         <div className="bg-blue-700 text-white px-5 py-3 rounded-t-xl shadow-md inline-block mb-4 md:mb-8">
            <h3 className="text-xl md:text-2xl font-bold">課堂中最觸動您的一句發言</h3>
@@ -375,7 +417,6 @@ const GroupMatrix = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
         {COOKING_GROUPS.map((group) => (
           <div key={group.id} className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-500">
-            {/* Dish Image */}
             <div className="relative aspect-video overflow-hidden">
               <img 
                 src={group.image} 
@@ -390,19 +431,16 @@ const GroupMatrix = () => {
               </div>
             </div>
 
-            {/* Content */}
             <div className="p-6 md:p-8 flex-1 flex flex-col">
               <h4 className="text-xl font-bold text-gray-900 mb-6">{group.name}</h4>
 
-              {/* Main Spectrum UI - Orientation logic, not a score */}
               <div className="mb-8">
                 <div className="flex justify-between text-[10px] md:text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">
-                  <span>效果導向 (Effectuation)</span>
-                  <span>因果導向 (Causation)</span>
+                  <span className="text-blue-600">效果導向 (Effectuation)</span>
+                  <span className="text-green-600">因果導向 (Causation)</span>
                 </div>
                 <div className="h-4 bg-gray-100 rounded-full relative">
-                  <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-400 via-gray-200 to-green-500 opacity-20 w-full"></div>
-                  {/* Indicator Triangle - Swapped position logic (1 - spectrum) to put Effectuation(1) on left(0) */}
+                  <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-400 via-gray-200 to-green-500 opacity-20 w-full rounded-full"></div>
                   <div 
                     className="absolute top-0 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-emerald-600 transition-all duration-1000 ease-out z-10"
                     style={{ left: `calc(${(1 - group.spectrum) * 100}% - 8px)` }}
@@ -410,39 +448,34 @@ const GroupMatrix = () => {
                 </div>
               </div>
 
-              {/* Principles Radar - Represented as Orientation Sliders, not progress bars */}
               <div className="space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-100">
                 <div className="text-xs font-bold text-gray-400 mb-2 flex items-center">
                   <Eye className="w-3 h-3 mr-1" /> 五大原則偏向偵測
                 </div>
-                </div>
                 
-               {[
+                {[
                   { label: "食材取得", icon: Flame, val: group.principles.sourcing },
                   { label: "風險控管", icon: ShieldCheck, val: group.principles.risk },
                   { label: "競爭or合作", icon: Handshake, val: group.principles.partnership },
                   { label: "控制or預測", icon: Navigation, val: group.principles.control },
                   { label: "因應變局", icon: Zap, val: group.principles.lemonade },
                 ].map((p, idx) => {
-                  const Icon = p.icon;
-                  const biasColor = p.val > 50 ? 'bg-blue-500' : p.val < 50 ? 'bg-green-500' : 'bg-gray-400';
-                  const textColor = p.val > 50 ? 'text-blue-700' : p.val < 50 ? 'text-green-700' : 'text-gray-500';
+                  const isEffectBias = p.val > 50;
+                  const biasColor = isEffectBias ? 'bg-blue-500' : 'bg-green-500';
+                  const textColor = isEffectBias ? 'text-blue-700' : 'text-green-700';
 
                   return (
                     <div key={idx} className="flex items-center space-x-3">
-                      
-                       <Icon className={`w-4 h-4 shrink-0 ${p.val > 50 ? 'text-blue-500' : 'text-green-500'}`} /> 
+                      <p.icon className={`w-4 h-4 shrink-0 ${isEffectBias ? 'text-blue-500' : 'text-green-500'}`} />
                       <div className="flex-1">
                         <div className="flex justify-between text-[10px] font-bold mb-1">
                           <span className="text-gray-600">{p.label}</span>
-                          <span className={`text-[8px] uppercase ${textColor}`}>
-                            {p.val > 50 ? '效果傾向' : p.val < 50 ? '因果傾向' : '中性'}
+                          <span className={`text-[8px] uppercase font-bold ${textColor}`}>
+                            {isEffectBias ? '效果傾向' : '因果傾向'}
                           </span>
                         </div>
                         <div className="h-2 w-full bg-gray-200 rounded-full relative overflow-hidden">
-                          {/* Track logic: Left is Blue (Effectuation), Right is Green (Causation) */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-green-100 opacity-50"></div>
-                          {/* Indicator Dot (100 - val)% positioning to align with Left=Effectuation logic */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-100 via-gray-100 to-green-100 opacity-50"></div>
                           <div 
                             className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border border-white shadow-sm transition-all duration-1000 delay-300 ${biasColor}`}
                             style={{ left: `calc(${(100 - p.val)}% - 6px)` }}
@@ -452,16 +485,51 @@ const GroupMatrix = () => {
                     </div>
                   );
                 })}
-
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 
 const SessionThreeDetail = () => {
+  const [selectedVideoId, setSelectedVideoId] = useState<string>('');
+
+  const videoList = [
+    { 
+      id: '1tqnSsIp2sFDp92iyygla39JWIBDoztU5', 
+      title: '實作紀錄：共創廚房（一）', 
+      thumbnail: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800&auto=format&fit=crop',
+      status: '已錄製' 
+    },
+    { 
+      id: '', 
+      title: '即將揭曉...', 
+      thumbnail: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?q=80&w=800&auto=format&fit=crop',
+      status: '待錄製' 
+    },
+    { 
+      id: '', 
+      title: '即將揭曉...', 
+      thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop',
+      status: '待錄製' 
+    },
+    { 
+      id: '', 
+      title: '即將揭曉...', 
+      thumbnail: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
+      status: '待錄製' 
+    },
+    { 
+      id: '', 
+      title: '即將揭曉...', 
+      thumbnail: 'https://images.unsplash.com/photo-1473093226795-af9932fe5855?q=80&w=800&auto=format&fit=crop',
+      status: '待錄製' 
+    },
+  ];
+
   return (
     <div className="space-y-8 md:space-y-12 animate-fade-in text-center py-6 md:py-10">
        <div className="max-w-2xl mx-auto px-4">
@@ -476,13 +544,11 @@ const SessionThreeDetail = () => {
           </p>
        </div>
 
-       {/* Swapped and Recolored Core Framework */}
        <div className="max-w-4xl mx-auto bg-white p-5 md:p-8 rounded-2xl shadow-xl border border-gray-100">
           <div className="text-center mb-6 md:mb-8">
             <h4 className="text-lg md:text-xl font-bold inline-block pb-2 border-b-4 border-emerald-500 uppercase tracking-wide">課程架構核心</h4>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-             {/* Effectuation - Left, Blue */}
              <div className="bg-blue-50 p-6 md:p-8 rounded-3xl text-left border border-blue-100 shadow-sm">
                 <div className="flex items-center mb-4">
                    <div className="bg-blue-600 p-2 rounded-xl mr-3">
@@ -493,14 +559,8 @@ const SessionThreeDetail = () => {
                 <p className="text-sm md:text-base text-blue-900 font-medium leading-relaxed mb-4">
                   盤點現有手段 → 創造機會 → 控制風險
                 </p>
-                <div className="space-y-2 opacity-60">
-                   <div className="h-1.5 w-full bg-blue-200 rounded-full"></div>
-                   <div className="h-1.5 w-3/4 bg-blue-200 rounded-full"></div>
-                   <div className="h-1.5 w-1/2 bg-blue-200 rounded-full"></div>
-                </div>
              </div>
 
-             {/* Causation - Right, Green */}
              <div className="bg-green-50 p-6 md:p-8 rounded-3xl text-left border border-green-100 shadow-sm">
                 <div className="flex items-center mb-4">
                    <div className="bg-green-600 p-2 rounded-xl mr-3">
@@ -511,42 +571,65 @@ const SessionThreeDetail = () => {
                 <p className="text-sm md:text-base text-green-900 font-medium leading-relaxed mb-4">
                   預測未來 → 設定目標 → 尋找資源
                 </p>
-                <div className="space-y-2 opacity-60">
-                   <div className="h-1.5 w-full bg-green-200 rounded-full"></div>
-                   <div className="h-1.5 w-3/4 bg-green-200 rounded-full"></div>
-                   <div className="h-1.5 w-1/2 bg-green-200 rounded-full"></div>
-                </div>
              </div>
           </div>
        </div>
 
-       {/* New 6-Group Matrix Section */}
        <GroupMatrix />
 
-       {/* Existing Videos Section */}
        <div className="max-w-5xl mx-auto mt-16 md:mt-24 px-4 pb-12">
           <div className="flex items-center justify-between mb-8">
              <h4 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center">
                <Video className="w-6 h-6 mr-2 text-emerald-600" />
                實作與訪談紀錄
              </h4>
-             <span className="text-xs md:text-sm text-emerald-600 font-bold bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100">2025/12/21 即將錄製</span>
+             <span className="text-xs md:text-sm text-emerald-600 font-bold bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100">Live 現場紀錄中</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 opacity-50">
-             {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="aspect-[9/16] bg-gray-200 rounded-2xl flex items-center justify-center relative overflow-hidden group border border-gray-300">
-                   <MonitorPlay className="w-8 h-8 text-gray-400 group-hover:text-emerald-500 transition-colors" />
-                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                      <div className="h-1.5 w-16 bg-white/40 rounded-full"></div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
+             {videoList.map((video, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => video.id && setSelectedVideoId(video.id)}
+                  className={`aspect-[9/16] rounded-2xl flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 border-2 shadow-sm
+                    ${video.id 
+                      ? 'bg-emerald-950 cursor-pointer hover:scale-[1.03] shadow-lg border-emerald-500/50 hover:border-emerald-400' 
+                      : 'bg-gray-100 opacity-60 border-dashed border-gray-300 grayscale'
+                    }`}
+                >
+                   {/* Thumbnail Overlay */}
+                   <div className="absolute inset-0 z-0">
+                      <img 
+                        src={video.thumbnail} 
+                        alt={video.title} 
+                        className={`w-full h-full object-cover transition-opacity duration-500 ${video.id ? 'opacity-40' : 'opacity-10'}`} 
+                      />
                    </div>
+
+                   {video.id ? (
+                      <div className="flex flex-col items-center p-4 text-white text-center z-10">
+                         <div className="bg-emerald-500 p-3 rounded-full mb-3 shadow-lg group-hover:bg-emerald-400 transition-colors">
+                            <MonitorPlay className="w-8 h-8 text-white drop-shadow-md" />
+                         </div>
+                         <span className="text-xs font-bold mb-1 drop-shadow-md">{video.title}</span>
+                         <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full">點擊播放</span>
+                      </div>
+                   ) : (
+                      <div className="flex flex-col items-center p-4 text-gray-400 z-10">
+                         <Clock className="w-8 h-8 mb-2 opacity-50" />
+                         <span className="text-[10px] font-bold">{video.status}</span>
+                      </div>
+                   )}
                 </div>
              ))}
-             <div className="aspect-[9/16] bg-gray-100 rounded-2xl flex flex-col items-center justify-center text-gray-400 text-xs p-4 border-2 border-dashed border-gray-300">
-                <span className="font-bold">更多紀錄</span>
-                <span className="mt-1">等待精彩瞬間...</span>
-             </div>
           </div>
        </div>
+
+       <VideoModal 
+         isOpen={!!selectedVideoId} 
+         onClose={() => setSelectedVideoId('')} 
+         videoId={selectedVideoId} 
+       />
     </div>
   );
 };
@@ -560,7 +643,6 @@ function App() {
       <Hero />
 
       <main className="container mx-auto px-4 py-4 md:py-12 -mt-6 md:-mt-10 relative z-20">
-        {/* Main Navigation - Mobile Scrollable Section Blocks */}
         <div className="flex overflow-x-auto no-scrollbar md:grid md:grid-cols-3 gap-4 mb-6 md:mb-10 pb-4 snap-x px-2">
           {SESSIONS.map((session) => {
             const isActive = activeSession === session.id;
@@ -610,9 +692,6 @@ function App() {
           </div>
           <p className="text-[10px] md:text-sm text-gray-400">
             &copy; 2025 當代企業策略課程紀錄 | 陳建男 教授、林益全 教授
-          </p>
-          <p className="text-[8px] md:text-xs text-gray-600 mt-1 md:mt-2">
-            Designed for educational purposes.
           </p>
         </div>
       </footer>
