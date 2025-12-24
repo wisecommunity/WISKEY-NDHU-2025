@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>當代企業策略 - 課程紀錄</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -15,11 +15,14 @@
               'wiskey-dark': '#58181B',
               'ndhu-green': '#3E7548',
             },
-          },
-        },
+            fontFamily: {
+              sans: ['Inter', 'Microsoft JhengHei', 'sans-serif'],
+            }
+          }
+        }
       }
     </script>
-     <style>
+    <style>
       /* Custom scrollbar for better aesthetics */
       ::-webkit-scrollbar {
         width: 8px;
@@ -56,10 +59,8 @@
     }
   }
   </script>
-  </head>
+</head>
   <body class="bg-gray-50 text-gray-800 antialiased">
     <div id="root"></div>
-    
-    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
