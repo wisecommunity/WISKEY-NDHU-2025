@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { SESSIONS, REFLECTIONS, TOUCH_CATEGORIES, TOUCH_CATEGORIES_SESSION_2, COOKING_GROUPS } from './constants';
+import { SESSIONS, REFLECTIONS, TOUCH_CATEGORIES, TOUCH_CATEGORIES_SESSION_2, COOKING_GROUPS, SESSION_3_CONTENT, SESSION_3_FIELD_NOTES } from './constants';
 import { SessionStatus } from './types';
 import { 
   Users, 
@@ -26,44 +26,49 @@ import {
   Handshake,
   Navigation,
   X,
-  Loader2
+  Loader2,
+  BookOpen,
+  ArrowRightLeft,
+  Infinity as InfinityIcon,
+  TrendingUp,
+  Globe,
+  Sparkles,
+  PenTool,
+  ArrowUp,
+  Camera
 } from 'lucide-react';
 
 const Header = () => (
-  <header className="bg-wiskey-red text-white sticky top-0 z-50 shadow-lg">
+  <header className="bg-wiskey-red text-white sticky top-0 z-50 shadow-md">
     <div className="container mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row justify-between items-center">
       <div className="flex items-center space-x-3 mb-2 md:mb-0">
         <div className="bg-white p-1.5 rounded-lg">
            <img 
               src="https://drive.google.com/thumbnail?id=1NoLl1tjoWKmIDKy1fPbo_UhY6WWDkzQq&sz=w1000" 
               alt="Course Logo" 
-              className="h-8 md:h-10 w-auto object-contain"
+              className="h-7 md:h-9 w-auto object-contain"
             />
         </div>
         <div>
-          <h1 className="text-lg md:text-2xl font-bold tracking-tight">當代企業策略</h1>
-          <p className="text-[10px] md:text-sm text-red-100 opacity-90">東華大學 EMBA | 陳建男 教授、林益全 教授</p>
+          <h1 className="text-lg md:text-xl font-bold tracking-tight">當代企業策略</h1>
+          <p className="text-sm text-red-100 opacity-90 font-medium">東華大學 EMBA | 陳建男、林益全 教授</p>
         </div>
       </div>
-      <div className="flex items-center space-x-6 text-xs md:text-sm">
-         <span className="flex items-center"><BrainCircuit className="w-3 h-3 md:w-4 md:h-4 mr-1"/> 度化智能 Evolving Intelligence</span>
+      <div className="flex items-center space-x-4 text-sm md:text-base font-semibold">
+         <span className="flex items-center"><BrainCircuit className="w-5 h-5 mr-2 text-red-200"/> 度化智能 Evolving Intelligence</span>
       </div>
     </div>
   </header>
 );
 
 const Hero = () => (
-  <div className="bg-gradient-to-br from-wiskey-dark to-wiskey-red text-white py-8 md:py-20 relative overflow-hidden">
+  <div className="bg-gradient-to-br from-wiskey-dark to-wiskey-red text-white py-12 md:py-24 relative overflow-hidden">
     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-    <div className="container mx-auto px-4 relative z-10">
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl md:text-5xl font-bold mb-4 md:mb-6">不確定環境下的決策與領導</h2>
-        <p className="text-sm md:text-xl text-red-100 mb-2 md:mb-8 leading-relaxed px-4">
-          探索 AI 時代的策略思維，從創業家精神到動態競爭.
-          <br className="hidden md:block"/>
-          三堂深度課程，紀錄我們共同的學習軌跡。
-        </p>
-      </div>
+    <div className="container mx-auto px-4 relative z-10 text-center">
+      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tight leading-tight">不確定環境下的決策與領導</h2>
+      <p className="text-base md:text-xl text-red-100 max-w-2xl mx-auto opacity-90 leading-relaxed font-bold">
+        探索 AI 時代的策略思維，紀錄我們共同的學習軌跡。
+      </p>
     </div>
   </div>
 );
@@ -73,38 +78,34 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: ()
 
   useEffect(() => {
     if (isOpen) {
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
       setIsLoading(true);
     } else {
       document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '0px';
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-2 md:p-10 animate-fade-in backdrop-blur-sm">
-      <button 
-        onClick={onClose} 
-        className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-white p-2 z-[10001] bg-white/10 rounded-full transition-all hover:rotate-90"
-        aria-label="Close"
-      >
-        <X className="w-8 h-8 md:w-10 md:h-10" />
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 md:p-10 animate-fade-in backdrop-blur-sm" onClick={onClose}>
+      <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white p-2 z-[10001] bg-white/10 rounded-full transition-all hover:rotate-90">
+        <X className="w-8 h-8" />
       </button>
-      
-      <div className="relative w-full max-w-5xl bg-black rounded-xl md:rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 flex flex-col justify-center">
+      <div className="relative w-full max-w-5xl bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10 flex flex-col justify-center" onClick={e => e.stopPropagation()}>
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
-            <div className="flex flex-col items-center">
-               <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mb-4" />
-               <p className="text-emerald-500/80 font-medium text-sm animate-pulse">影片載入中...</p>
-            </div>
+            <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
           </div>
         )}
         <div className="relative w-full pt-[56.25%]">
           <iframe
-            src={`https://drive.google.com/file/d/${videoId}/preview`}
-            className="absolute top-0 left-0 w-full h-full border-none shadow-inner"
+            key={videoId}
+            src={`https://drive.google.com/file/d/${videoId}/preview?autoplay=1`}
+            className="absolute top-0 left-0 w-full h-full border-none"
             allow="autoplay; fullscreen"
             onLoad={() => setIsLoading(false)}
             title="Video Content"
@@ -115,8 +116,68 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: ()
   );
 };
 
+const ImageModal = ({ isOpen, onClose, imageUrl }: { isOpen: boolean, onClose: () => void, imageUrl: string }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/95 p-4 md:p-12 animate-fade-in cursor-zoom-out" onClick={onClose}>
+      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white p-2 z-[10002] bg-white/10 rounded-full transition-all hover:rotate-90">
+        <X className="w-8 h-8" />
+      </button>
+      <div className="relative max-w-full max-h-full flex items-center justify-center" onClick={e => e.stopPropagation()}>
+        <img src={imageUrl} alt="Zoomed View" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+      </div>
+    </div>
+  );
+};
+
+const BackToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <button
+      onClick={scrollToTop}
+      className="fixed bottom-8 right-8 z-[9000] p-4 bg-wiskey-red text-white rounded-full shadow-2xl hover:bg-wiskey-dark transition-all hover:scale-110 active:scale-95 animate-fade-in group"
+      aria-label="Back to top"
+    >
+      <ArrowUp className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
+    </button>
+  );
+};
+
 const SessionOneDetail = () => {
   const [activeTab, setActiveTab] = useState<'strategy' | 'execution' | 'choice' | 'legacy'>('strategy');
+  const [zoomedImageUrl, setZoomedImageUrl] = useState<string>('');
 
   const tabs = [
     { id: 'strategy', label: '策略', icon: Users, color: 'border-wiskey-red text-wiskey-red' },
@@ -125,26 +186,80 @@ const SessionOneDetail = () => {
     { id: 'legacy', label: '傳承', icon: History, color: 'border-emerald-600 text-emerald-600' },
   ];
 
+  const classPhotoUrl = "https://raw.githubusercontent.com/wisecommunity/WISKEY-NDHU-2025/main/images/Screenshot%202025-10-26.png";
+
   return (
-    <div className="space-y-8 md:space-y-16 animate-fade-in pb-12">
+    <div className="space-y-10 md:space-y-16 animate-fade-in pb-12">
       <section>
-        <div className="bg-wiskey-red text-white px-5 py-3 rounded-t-xl shadow-md inline-block mb-4 md:mb-8">
-           <h3 className="text-xl md:text-2xl font-bold">課堂中最觸動您的一句發言</h3>
+        <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+           <div className="flex-1 w-full flex flex-col">
+              <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-red-100 text-red-800 text-sm font-bold mb-5 border border-red-200 shadow-sm w-fit">
+                <BrainCircuit className="w-4 h-4 mr-2" /> 核心主題
+              </div>
+              <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-6 leading-tight">透過宏觀思維理論、實務及模型，探索 「1 到 N」的思維邏輯</h3>
+              <ul className="space-y-4 flex-1">
+                {["AI-X-Gs、S.O.F.T、C.L.E.A.R. Model", "度化智能", "生命的樂章", "案例思問：搶進AI浪潮或是維持股利政策"].map((item, i) => (
+                  <li key={i} className="flex items-center text-gray-800 bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm text-base md:text-lg font-bold hover:shadow-md transition-shadow">
+                    <div className="w-3 h-3 bg-wiskey-red rounded-full mr-4 shrink-0 shadow-sm"></div>{item}
+                  </li>
+                ))}
+              </ul>
+           </div>
+           <div className="w-full lg:w-1/2 flex items-center justify-center">
+              <div 
+                className="w-full h-full rounded-2xl overflow-hidden shadow-xl bg-gray-950 aspect-video lg:aspect-auto relative group border-4 border-white max-h-[420px] cursor-zoom-in"
+                onClick={() => setZoomedImageUrl(classPhotoUrl)}
+              >
+                <img 
+                  src={classPhotoUrl} 
+                  alt="Session 1 Class" 
+                  className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-500"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors flex flex-col items-center justify-center p-4 text-center">
+                   <p className="text-white font-bold text-base md:text-lg tracking-widest bg-black/60 px-5 py-2 rounded-full backdrop-blur-sm shadow-lg border border-white/20 group-hover:scale-105 transition-transform">
+                      <Sparkles className="inline-block w-4 h-4 mr-2 text-amber-400" />
+                      2025/10/26 線上課程紀錄
+                   </p>
+                </div>
+              </div>
+           </div>
         </div>
-        
-        <div className="space-y-6 md:space-y-12">
+      </section>
+
+      <section className="bg-wiskey-red rounded-[32px] p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-10 items-center relative z-10">
+          <div className="w-full lg:w-5/12 relative">
+             <img src="https://raw.githubusercontent.com/wisecommunity/WISKEY-NDHU-2025/main/images/%E5%A4%9A%E9%9D%A2%E5%90%91%E6%80%9D%E7%B6%AD.jpg" className="w-full rounded-2xl shadow-xl border-2 border-white/10" />
+             <div className="absolute -bottom-4 -right-4 bg-amber-500 text-black px-4 py-2 text-sm md:text-base font-black rounded-lg shadow-lg">多面向思維</div>
+          </div>
+          <div className="flex-1">
+             <h4 className="text-red-200 font-bold text-sm md:text-base mb-3 tracking-widest uppercase flex items-center opacity-80">
+               <MonitorPlay className="w-4 h-4 mr-2" /> Multidimensional Thinking
+             </h4>
+             <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">探索策略的多維度空間</h3>
+             <p className="text-white text-lg md:text-xl font-bold mb-6 border-l-4 border-amber-500 pl-5 py-1 bg-white/5 rounded-r-lg">從度化智能到生命樂章</p>
+             <p className="text-gray-200 text-base md:text-lg leading-relaxed font-medium italic opacity-90">「策略不只是選擇，更是對世界多重因果關係的深刻洞察。」</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-wiskey-red text-white px-5 py-3 rounded-t-xl shadow-md inline-block mb-6 md:mb-8">
+           <h3 className="text-lg md:text-xl font-bold">課堂中最觸動您的一句發言</h3>
+        </div>
+        <div className="space-y-6 md:space-y-10">
           {TOUCH_CATEGORIES.map((category, catIdx) => (
             <div key={catIdx} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-               <div className="bg-gray-50 border-b border-gray-100 p-4 md:p-6">
-                  <h4 className="text-lg md:text-xl font-bold text-wiskey-red mb-1 md:mb-2">{category.title}</h4>
-                  <p className="text-gray-500 italic text-xs md:text-sm">{category.description}</p>
+               <div className="bg-gray-50 border-b border-gray-100 p-5 md:p-6">
+                  <h4 className="text-lg md:text-xl font-bold text-wiskey-red mb-1">{category.title}</h4>
+                  <p className="text-gray-600 italic text-sm md:text-base font-medium">{category.description}</p>
                </div>
-               <div className="p-4 md:p-6">
-                  <ul className="space-y-4 md:space-y-6">
+               <div className="p-5 md:p-8">
+                  <ul className="space-y-5 md:space-y-6">
                     {category.students.map((student, sIdx) => (
-                      <li key={sIdx} className="flex gap-2 md:gap-4 items-start">
-                        <span className="text-wiskey-red font-bold whitespace-nowrap pt-0.5 text-sm md:text-base">• {student.name}：</span>
-                        <p className="text-gray-700 text-sm md:text-base leading-relaxed bg-gray-50/50 p-3 md:p-4 rounded-lg border border-gray-100 flex-1">
+                      <li key={sIdx} className="flex gap-3 md:gap-5 items-start">
+                        <span className="text-wiskey-red font-bold whitespace-nowrap pt-1 text-sm md:text-base shrink-0">• {student.name}：</span>
+                        <p className="text-gray-700 text-base md:text-lg leading-relaxed bg-gray-50/50 p-4 md:p-5 rounded-xl border border-gray-100 flex-1 font-medium">
                           {student.quote}
                         </p>
                       </li>
@@ -157,237 +272,121 @@ const SessionOneDetail = () => {
       </section>
 
       <section className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="bg-gray-800 text-white p-4 md:p-6">
+        <div className="bg-gray-800 text-white p-5 md:p-8">
           <h3 className="text-xl md:text-2xl font-bold flex items-center">
             <BrainCircuit className="w-6 h-6 mr-2 text-red-400" />
             深度反思：四大核心定義
           </h3>
-          <p className="text-gray-400 text-xs md:text-sm mt-1">點擊下方標籤快速切換不同維度的同學見解</p>
         </div>
-
         <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100 bg-gray-50 snap-x">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 min-w-[80px] py-3 md:py-4 px-2 flex flex-col items-center justify-center transition-all border-b-2 outline-none snap-start
-                  ${isActive 
-                    ? `${tab.color} bg-white font-bold` 
-                    : 'border-transparent text-gray-400 hover:text-gray-600'
-                  }
-                `}
-              >
-                <Icon className={`w-5 h-5 md:w-6 md:h-6 mb-1 ${isActive ? '' : 'opacity-50'}`} />
-                <span className="text-xs md:text-sm whitespace-nowrap">{tab.label}</span>
+              <button key={tab.id} onClick={() => setActiveTab(tab.id as any)} className={`flex-1 min-w-[100px] py-4 px-3 flex flex-col items-center justify-center transition-all border-b-4 outline-none snap-start ${isActive ? `${tab.color} bg-white font-bold` : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
+                <Icon className={`w-5 h-5 md:w-6 md:h-6 mb-1 ${isActive ? '' : 'opacity-40'}`} />
+                <span className="text-sm md:text-base whitespace-nowrap font-bold tracking-wider">{tab.label}</span>
               </button>
             );
           })}
         </div>
-
-        <div className="p-4 md:p-8 min-h-[400px]">
-          {activeTab === 'strategy' && (
-            <div className="animate-in fade-in duration-500">
-              <div className="mb-6 flex items-center">
-                <div className="w-2 h-8 bg-wiskey-red mr-3 rounded-full"></div>
-                <h4 className="text-xl font-bold text-gray-800">策略 (Strategy) — 從規劃到護城河</h4>
+        <div className="p-5 md:p-10 min-h-[400px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {REFLECTIONS.map((r, i) => (
+              <div key={i} className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all group flex flex-col">
+                <div className="font-bold text-gray-900 mb-2.5 flex items-center text-base">
+                   <div className="w-1.5 h-4 bg-gray-200 mr-2.5 rounded-full group-hover:bg-wiskey-red transition-colors shrink-0"></div>
+                   {r.name}
+                </div>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed italic font-medium flex-1">
+                  {(r as any)[activeTab]}
+                </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {REFLECTIONS.filter(r => r.strategy).map((r, i) => (
-                  <div key={i} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="font-bold text-wiskey-red mb-2 flex items-center text-sm md:text-base">
-                      <Users className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                      {r.name}
-                    </div>
-                    <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{r.strategy}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'execution' && (
-            <div className="animate-in fade-in duration-500">
-              <div className="mb-6 flex items-center">
-                <div className="w-2 h-8 bg-blue-600 mr-3 rounded-full"></div>
-                <h4 className="text-xl font-bold text-gray-800">執行 (Execution) — 從行動到成果</h4>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {REFLECTIONS.filter(r => r.execution).map((r, i) => (
-                  <div key={i} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="font-bold text-blue-600 mb-2 flex items-center text-sm md:text-base">
-                      <Zap className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                      {r.name}
-                    </div>
-                    <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{r.execution}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'choice' && (
-            <div className="animate-in fade-in duration-500">
-              <div className="mb-6 flex items-center">
-                <div className="w-2 h-8 bg-amber-600 mr-3 rounded-full"></div>
-                <h4 className="text-xl font-bold text-gray-800">選擇 (Choice) — 從取捨到智慧</h4>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {REFLECTIONS.filter(r => r.choice).map((r, i) => (
-                  <div key={i} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="font-bold text-amber-600 mb-2 flex items-center text-sm md:text-base">
-                      <GitBranch className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                      {r.name}
-                    </div>
-                    <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{r.choice}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'legacy' && (
-            <div className="animate-in fade-in duration-500">
-              <div className="mb-6 flex items-center">
-                <div className="w-2 h-8 bg-emerald-600 mr-3 rounded-full"></div>
-                <h4 className="text-xl font-bold text-gray-800">傳承 (Legacy) — 從交棒到永續</h4>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {REFLECTIONS.filter(r => r.legacy).map((r, i) => (
-                  <div key={i} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="font-bold text-emerald-600 mb-2 flex items-center text-sm md:text-base">
-                      <History className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                      {r.name}
-                    </div>
-                    <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{r.legacy}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </section>
+      <ImageModal isOpen={!!zoomedImageUrl} onClose={() => setZoomedImageUrl('')} imageUrl={zoomedImageUrl} />
     </div>
   );
 };
 
 const SessionTwoDetail = () => {
+  const [zoomedImageUrl, setZoomedImageUrl] = useState<string>('');
+  const classPhotoUrl = "https://raw.githubusercontent.com/wisecommunity/WISKEY-NDHU-2025/main/images/Screenshot%202025-12-07.png";
+
   return (
-    <div className="space-y-8 md:space-y-12 animate-fade-in pb-12">
+    <div className="space-y-10 md:space-y-16 animate-fade-in pb-12">
       <section>
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
-           <div className="flex-1 w-full">
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">創業家思維 + AI 時代的決策與領導</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-3">
-                {[
-                  "訊息管理看創業家思維",
-                  "創意、創新、創業",
-                  "創造機會：機會辨識與創造",
-                  "組織團隊：AGI時代下的領導力"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center text-gray-700 text-sm md:text-base bg-white p-3 rounded-lg border border-gray-100 md:bg-transparent md:border-none md:p-0">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 shrink-0"></span>
-                    {item}
+        <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+           <div className="flex-1 w-full flex flex-col">
+              <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-100 text-blue-800 text-sm font-bold mb-5 border border-blue-200 shadow-sm w-fit">
+                <BrainCircuit className="w-4 h-4 mr-2" /> 核心主題
+              </div>
+              <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-6 leading-tight">創業家思維 + AI 時代的決策與領導</h3>
+              <ul className="space-y-4 flex-1">
+                {["訊息管理看創業家思維", "創意、創新、創業", "創造機會：機會辨識與創造", "組織團隊：AGI時代下的領導力"].map((item, i) => (
+                  <li key={i} className="flex items-center text-gray-800 bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm text-base md:text-lg font-bold hover:shadow-md transition-shadow">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-4 shrink-0 shadow-sm"></div>{item}
                   </li>
                 ))}
               </ul>
            </div>
-           <div className="w-full md:w-1/2">
-              <div className="rounded-xl overflow-hidden shadow-lg bg-gray-900 aspect-video relative group">
+           <div className="w-full lg:w-1/2 flex items-center justify-center">
+              <div 
+                className="w-full h-full rounded-2xl overflow-hidden shadow-xl bg-gray-950 aspect-video lg:aspect-auto relative group border-4 border-white max-h-[420px] cursor-zoom-in"
+                onClick={() => setZoomedImageUrl(classPhotoUrl)}
+              >
                 <img 
-                  src="https://i.postimg.cc/L6zZjMGx/Screenshot-2025-12-07-at-7-02-08-PM.png" 
-                  alt="Online Class Screenshot" 
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                  src={classPhotoUrl} 
+                  alt="Class" 
+                  className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-500"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                   <div className="text-center p-4">
-                      <p className="text-white font-bold text-lg">線上課程紀錄</p>
-                      <p className="text-gray-300 text-xs md:text-sm">2025/12/07</p>
-                   </div>
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors flex flex-col items-center justify-center p-4 text-center">
+                   <p className="text-white font-bold text-base md:text-lg tracking-widest bg-black/60 px-5 py-2 rounded-full backdrop-blur-sm shadow-lg border border-white/20 group-hover:scale-105 transition-transform">
+                      <Sparkles className="inline-block w-4 h-4 mr-2 text-blue-400" />
+                      2025/12/07 線上課程紀錄
+                   </p>
                 </div>
               </div>
-              <p className="text-center text-xs text-gray-500 mt-2">課程全體合影</p>
            </div>
         </div>
       </section>
 
-      <hr className="border-gray-200" />
-
-      <section className="bg-gray-900 rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-wiskey-red/10 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3"></div>
-
-        <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
-          <div className="w-full lg:w-7/12">
-             <img 
-               src="https://i.postimg.cc/NFBHLJbD/neng-huo-dong-hua-zheng-yi-qi-chuang-ban-ren.png" 
-               alt="能火動畫：從創意到創業" 
-               className="w-full h-auto rounded-xl md:rounded-2xl shadow-xl ring-1 ring-white/10"
-             />
+      <section className="bg-gray-900 rounded-[32px] p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-10 items-center relative z-10">
+          <div className="w-full lg:w-5/12 relative">
+             <img src="https://raw.githubusercontent.com/wisecommunity/WISKEY-NDHU-2025/main/images/%E7%95%B6%E4%BB%A3%E4%BC%81%E6%A5%AD%E7%AD%96%E7%95%A5%EF%BC%8820251207%E6%9D%B1%E8%8F%AF%EF%BC%89.jpg" className="w-full rounded-2xl shadow-xl border-2 border-white/10" />
+             <div className="absolute -bottom-4 -right-4 bg-amber-500 text-black px-4 py-2 text-sm md:text-base font-black rounded-lg shadow-lg">創業家分享</div>
           </div>
-
-          <div className="w-full lg:w-5/12 flex flex-col justify-center text-white">
-             <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4 md:mb-6">
-                <span className="px-2 py-0.5 md:px-3 md:py-1 bg-amber-500 text-black text-[10px] md:text-xs font-bold uppercase tracking-wider rounded-full">
-                  創業家分享
-                </span>
-             </div>
-
-             <h3 className="text-2xl md:text-4xl font-bold mb-2 md:mb-3 leading-tight">
-               能火動畫：從創意到創業
-             </h3>
-             <div className="flex items-end gap-2 mb-6 md:mb-8">
-                <p className="text-lg md:text-xl text-amber-400 font-medium">
-                  鄭義錡 Ethan Cheng
-                </p>
-                <span className="text-gray-500 text-xs md:text-sm mb-1">/ 創辦人</span>
-             </div>
-
-             <div className="space-y-4 md:space-y-6">
-                <div className="bg-gray-800/50 border border-gray-700 p-4 md:p-5 rounded-xl hover:bg-gray-800 transition-colors">
-                   <div className="flex items-center mb-1 md:mb-2">
-                     <Zap className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mr-2" />
-                     <h5 className="font-bold text-white text-sm md:text-base">虛擬人 AI 技術</h5>
-                   </div>
-                   <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
-                     結合全息投影與 AI，創造鄧麗君、林俊傑等虛擬展演的沉浸式體驗。
-                   </p>
-                </div>
-
-                <div className="bg-gray-800/50 border border-gray-700 p-4 md:p-5 rounded-xl hover:bg-gray-800 transition-colors">
-                   <div className="flex items-center mb-1 md:mb-2">
-                      <Award className="w-4 h-4 md:w-5 md:h-5 text-amber-400 mr-2" />
-                      <h5 className="font-bold text-white text-sm md:text-base">國際創業歷程</h5>
-                   </div>
-                   <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
-                     從台大 EiMBA 到獲得 Hult Prize 霍特獎 Top 6 的國際肯定。
-                   </p>
-                </div>
-             </div>
+          <div className="flex-1">
+             <h4 className="text-amber-400 font-bold text-sm md:text-base mb-3 tracking-widest uppercase flex items-center opacity-80">
+               <Zap className="w-4 h-4 mr-2" /> Entrepreneurship
+             </h4>
+             <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">能火動畫：從創意到創業</h3>
+             <p className="text-white text-lg md:text-xl font-bold mb-6 border-l-4 border-amber-500 pl-5 py-1 bg-white/5 rounded-r-lg">鄭義錡 Ethan Cheng / 創辦人</p>
+             <p className="text-gray-300 text-base md:text-lg leading-relaxed font-medium italic opacity-90">「結合全息投影與 AI，重新定義沉浸式體驗。」</p>
           </div>
         </div>
       </section>
 
-      <section className="mt-12 md:mt-16">
-        <div className="bg-blue-700 text-white px-5 py-3 rounded-t-xl shadow-md inline-block mb-4 md:mb-8">
-           <h3 className="text-xl md:text-2xl font-bold">課堂中最觸動您的一句發言</h3>
+      <section>
+        <div className="bg-blue-700 text-white px-5 py-3 rounded-t-xl shadow-md inline-block mb-6 md:mb-8">
+           <h3 className="text-lg md:text-xl font-bold">課程反思精選：創業家思維</h3>
         </div>
-        
-        <div className="space-y-6 md:space-y-12">
+        <div className="space-y-6 md:space-y-10">
           {TOUCH_CATEGORIES_SESSION_2.map((category, catIdx) => (
             <div key={catIdx} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-               <div className="bg-blue-50 border-b border-blue-100 p-4 md:p-6">
-                  <h4 className="text-lg md:text-xl font-bold text-blue-800 mb-1 md:mb-2">{category.title}</h4>
-                  <p className="text-gray-500 italic text-xs md:text-sm">{category.description}</p>
+               <div className="bg-blue-50 border-b border-blue-100 p-5 md:p-6">
+                  <h4 className="text-lg md:text-xl font-bold text-blue-900 mb-1">{category.title}</h4>
+                  <p className="text-blue-700 italic text-sm md:text-base font-medium opacity-70">{category.description}</p>
                </div>
-               <div className="p-4 md:p-6">
-                  <ul className="space-y-4 md:space-y-6">
+               <div className="p-5 md:p-8">
+                  <ul className="space-y-5 md:space-y-6">
                     {category.students.map((student, sIdx) => (
-                      <li key={sIdx} className="flex gap-2 md:gap-4 items-start">
-                        <span className="text-blue-700 font-bold whitespace-nowrap pt-0.5 text-sm md:text-base">• {student.name}：</span>
-                        <p className="text-gray-700 text-sm md:text-base leading-relaxed bg-gray-50/50 p-3 md:p-4 rounded-lg border border-gray-100 flex-1">
+                      <li key={sIdx} className="flex gap-3 md:gap-5 items-start">
+                        <span className="text-blue-700 font-bold whitespace-nowrap pt-1 text-sm md:text-base shrink-0">• {student.name}：</span>
+                        <p className="text-gray-700 text-base md:text-lg leading-relaxed bg-blue-50/30 p-4 md:p-5 rounded-xl border border-blue-100 flex-1 font-medium">
                           {student.quote}
                         </p>
                       </li>
@@ -398,238 +397,253 @@ const SessionTwoDetail = () => {
           ))}
         </div>
       </section>
+      <ImageModal isOpen={!!zoomedImageUrl} onClose={() => setZoomedImageUrl('')} imageUrl={zoomedImageUrl} />
     </div>
-  );
-};
-
-const GroupMatrix = () => {
-  return (
-    <section className="mt-16 md:mt-24">
-      <div className="text-center mb-10 md:mb-16">
-        <div className="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full mb-4">
-          <Radar className="w-5 h-5" />
-          <span className="font-bold">六組決策分析矩陣 (The 6-Group Matrix)</span>
-        </div>
-        <h3 className="text-2xl md:text-4xl font-bold text-gray-900">烹飪競賽中的決策軌跡</h3>
-        <p className="text-gray-500 mt-4 max-w-2xl mx-auto">透視各組在「共創料理」過程中的邏輯偏向，從光譜到細部原則的深度偵測。</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-        {COOKING_GROUPS.map((group) => (
-          <div key={group.id} className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-500">
-            <div className="relative aspect-video overflow-hidden">
-              <img 
-                src={group.image} 
-                alt={group.name} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=800&auto=format&fit=crop';
-                }}
-              />
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-emerald-800 shadow-sm">
-                Group {group.id}
-              </div>
-            </div>
-
-            <div className="p-6 md:p-8 flex-1 flex flex-col">
-              <h4 className="text-xl font-bold text-gray-900 mb-6">{group.name}</h4>
-
-              <div className="mb-8">
-                <div className="flex justify-between text-[10px] md:text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">
-                  <span className="text-blue-600">效果導向 (Effectuation)</span>
-                  <span className="text-green-600">因果導向 (Causation)</span>
-                </div>
-                <div className="h-4 bg-gray-100 rounded-full relative">
-                  <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-400 via-gray-200 to-green-500 opacity-20 w-full rounded-full"></div>
-                  <div 
-                    className="absolute top-0 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-emerald-600 transition-all duration-1000 ease-out z-10"
-                    style={{ left: `calc(${(1 - group.spectrum) * 100}% - 8px)` }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-100">
-                <div className="text-xs font-bold text-gray-400 mb-2 flex items-center">
-                  <Eye className="w-3 h-3 mr-1" /> 五大原則偏向偵測
-                </div>
-                
-                {[
-                  { label: "食材取得", icon: Flame, val: group.principles.sourcing },
-                  { label: "風險控管", icon: ShieldCheck, val: group.principles.risk },
-                  { label: "競爭or合作", icon: Handshake, val: group.principles.partnership },
-                  { label: "控制or預測", icon: Navigation, val: group.principles.control },
-                  { label: "因應變局", icon: Zap, val: group.principles.lemonade },
-                ].map((p, idx) => {
-                  const isEffectBias = p.val > 50;
-                  const biasColor = isEffectBias ? 'bg-blue-500' : 'bg-green-500';
-                  const textColor = isEffectBias ? 'text-blue-700' : 'text-green-700';
-
-                  return (
-                    <div key={idx} className="flex items-center space-x-3">
-                      <p.icon className={`w-4 h-4 shrink-0 ${isEffectBias ? 'text-blue-500' : 'text-green-500'}`} />
-                      <div className="flex-1">
-                        <div className="flex justify-between text-[10px] font-bold mb-1">
-                          <span className="text-gray-600">{p.label}</span>
-                          <span className={`text-[8px] uppercase font-bold ${textColor}`}>
-                            {isEffectBias ? '效果傾向' : '因果傾向'}
-                          </span>
-                        </div>
-                        <div className="h-2 w-full bg-gray-200 rounded-full relative overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-r from-blue-100 via-gray-100 to-green-100 opacity-50"></div>
-                          <div 
-                            className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border border-white shadow-sm transition-all duration-1000 delay-300 ${biasColor}`}
-                            style={{ left: `calc(${(100 - p.val)}% - 6px)` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
   );
 };
 
 const SessionThreeDetail = () => {
   const [selectedVideoId, setSelectedVideoId] = useState<string>('');
+  const [zoomedImageUrl, setZoomedImageUrl] = useState<string>('');
 
-  const videoList = [
-    { 
-      id: '1tqnSsIp2sFDp92iyygla39JWIBDoztU5', 
-      title: '實作紀錄：共創廚房（一）', 
-      thumbnail: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800&auto=format&fit=crop',
-      status: '已錄製' 
-    },
-    { 
-      id: '', 
-      title: '即將揭曉...', 
-      thumbnail: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?q=80&w=800&auto=format&fit=crop',
-      status: '待錄製' 
-    },
-    { 
-      id: '', 
-      title: '即將揭曉...', 
-      thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop',
-      status: '待錄製' 
-    },
-    { 
-      id: '', 
-      title: '即將揭曉...', 
-      thumbnail: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
-      status: '待錄製' 
-    },
-    { 
-      id: '', 
-      title: '即將揭曉...', 
-      thumbnail: 'https://images.unsplash.com/photo-1473093226795-af9932fe5855?q=80&w=800&auto=format&fit=crop',
-      status: '待錄製' 
-    },
-  ];
+  const renderPrincipleCard = (principle: any) => (
+    <div key={principle.id} className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden mb-10 animate-fade-in">
+      <div className="bg-gray-50 border-b border-gray-100 p-6 md:p-10">
+        <h4 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">{principle.title}</h4>
+        <p className="text-gray-600 italic text-sm md:text-base font-semibold">{principle.dimension}</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="p-6 md:p-10 border-b md:border-b-0 md:border-r border-gray-100 bg-blue-50/20">
+          <div className="mb-6">
+            <div className="flex items-center mb-1">
+              <div className="bg-blue-600 p-3 rounded-2xl mr-4 shadow-lg"><Zap className="w-5 h-5 text-white" /></div>
+              <h5 className="font-bold text-blue-900 text-lg md:text-xl">效果邏輯 (Effectuation)</h5>
+            </div>
+            <p className="ml-[68px] text-blue-600 font-black text-sm md:text-base border-l-2 border-blue-200 pl-3">「{principle.effectuation.label}」</p>
+          </div>
+          <p className="text-base md:text-lg text-gray-800 mb-8 font-bold leading-relaxed bg-white/70 p-5 rounded-xl border border-blue-100">{principle.effectuation.definition}</p>
+          <div className="space-y-4">
+            <p className="text-sm font-bold text-blue-400 uppercase tracking-widest flex items-center">
+              <Video className="w-4 h-4 mr-2" /> 實作影片
+            </p>
+            {principle.effectuation.videos.map((vid: any, i: number) => (
+              <button key={i} onClick={() => setSelectedVideoId(vid.id)} className="flex items-center text-left bg-white hover:bg-blue-50 p-4 rounded-xl border border-gray-100 w-full group transition-all shadow-sm">
+                <div className="w-20 h-12 bg-gray-200 rounded-lg overflow-hidden shrink-0 mr-4 relative border border-gray-100">
+                   <img src={`https://drive.google.com/thumbnail?id=${vid.id}&sz=w400`} className="w-full h-full object-cover" alt="" />
+                   <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/0"><MonitorPlay className="w-5 h-5 text-white" /></div>
+                </div>
+                <span className="text-sm md:text-base font-bold text-gray-700 group-hover:text-blue-700 line-clamp-2">{vid.title}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="p-6 md:p-10 bg-green-50/20">
+          <div className="mb-6">
+            <div className="flex items-center mb-1">
+              <div className="bg-green-600 p-3 rounded-2xl mr-4 shadow-lg"><Target className="w-5 h-5 text-white" /></div>
+              <h5 className="font-bold text-green-900 text-lg md:text-xl">因果邏輯 (Causation)</h5>
+            </div>
+            <p className="ml-[68px] text-green-700 font-black text-sm md:text-base border-l-2 border-green-200 pl-3">「{principle.causation.label}」</p>
+          </div>
+          <p className="text-base md:text-lg text-gray-800 mb-8 font-bold leading-relaxed bg-white/70 p-5 rounded-xl border border-green-100">{principle.causation.definition}</p>
+          <div className="space-y-4">
+            {principle.causation.videos.length > 0 ? (
+              <>
+                <p className="text-sm font-bold text-green-400 uppercase tracking-widest flex items-center">
+                   <Video className="w-4 h-4 mr-2" /> 實作影片
+                </p>
+                {principle.causation.videos.map((vid: any, i: number) => (
+                  <button key={i} onClick={() => setSelectedVideoId(vid.id)} className="flex items-center text-left bg-white hover:bg-green-50 p-4 rounded-xl border border-gray-100 w-full group transition-all shadow-sm">
+                    <div className="w-20 h-12 bg-gray-200 rounded-lg overflow-hidden shrink-0 mr-4 relative border border-gray-100">
+                       <img src={`https://drive.google.com/thumbnail?id=${vid.id}&sz=w400`} className="w-full h-full object-cover" alt="" />
+                       <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/0"><MonitorPlay className="w-5 h-5 text-white" /></div>
+                    </div>
+                    <span className="text-sm md:text-base font-bold text-gray-700 group-hover:text-green-700 line-clamp-2">{vid.title}</span>
+                  </button>
+                ))}
+              </>
+            ) : <p className="text-gray-400 italic text-base text-center py-8 font-bold opacity-50">本次無對應因果邏輯案例</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="space-y-8 md:space-y-12 animate-fade-in text-center py-6 md:py-10">
-       <div className="max-w-2xl mx-auto px-4">
-          <div className="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full inline-flex items-center mb-4 md:mb-6">
-             <Clock className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-             <span className="font-semibold text-xs md:text-base">課程日期：2025/12/21 (日)</span>
-          </div>
-          <h3 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">廚房裡的孫子兵法：共創料理的決策邏輯分析</h3>
-          <p className="text-sm md:text-lg text-gray-600 mb-6 md:mb-8">
-            本堂課程將以實體形式進行。課程設計核心圍繞「因果效果邏輯」，
-            並將透過烹飪實作中的動態競爭，呈現最具生命力的策略激盪。
-          </p>
-       </div>
+    <div className="space-y-12 md:space-y-16 animate-fade-in pb-16">
+      <section className="text-center pt-8">
+         <div className="max-w-3xl mx-auto px-4">
+            <div className="bg-emerald-100 text-emerald-800 px-6 py-2 rounded-full inline-flex items-center mb-8 shadow-sm border border-emerald-200">
+               <Clock className="w-5 h-5 mr-2" />
+               <span className="font-bold text-sm md:text-base tracking-widest uppercase">決策實務與度化智能</span>
+            </div>
+            <h3 className="text-3xl md:text-5xl font-black text-gray-900 mb-5 leading-tight tracking-tight">決策實務與度化智能</h3>
+            <p className="text-base md:text-xl text-gray-600 leading-relaxed font-bold opacity-80 mb-10">透過烹飪實作中的動態競爭，進行因果與效果邏輯的決策分析。</p>
+            
+            <div className="relative rounded-[40px] overflow-hidden shadow-2xl border-8 border-white group">
+               <img src={SESSION_3_CONTENT.images.group} alt="Course Group Photo" className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105" />
+               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
+                  <p className="text-white font-bold text-lg md:text-xl">「夥伴選擇是策略落地的第一步」— 課程合影</p>
+               </div>
+            </div>
+         </div>
+      </section>
 
-       <div className="max-w-4xl mx-auto bg-white p-5 md:p-8 rounded-2xl shadow-xl border border-gray-100">
-          <div className="text-center mb-6 md:mb-8">
-            <h4 className="text-lg md:text-xl font-bold inline-block pb-2 border-b-4 border-emerald-500 uppercase tracking-wide">課程架構核心</h4>
+      <section className="max-w-5xl mx-auto px-4">
+        <div className="bg-wiskey-red text-white p-8 md:p-14 rounded-[40px] shadow-2xl relative overflow-hidden">
+          <div className="relative z-10">
+            <h2 className="text-2xl md:text-4xl font-black mb-8 leading-tight tracking-tight">{SESSION_3_CONTENT.opening.title}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+               <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-white/20"><p className="text-white text-base md:text-lg font-bold leading-relaxed">{SESSION_3_CONTENT.opening.coreMessage}</p></div>
+               <div className="relative pt-6 md:pt-0 italic text-white text-xl md:text-2xl font-black leading-tight border-l-4 border-red-400/30 pl-6">「{SESSION_3_CONTENT.opening.quote}」</div>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-             <div className="bg-blue-50 p-6 md:p-8 rounded-3xl text-left border border-blue-100 shadow-sm">
-                <div className="flex items-center mb-4">
-                   <div className="bg-blue-600 p-2 rounded-xl mr-3">
-                      <Zap className="w-5 h-5 text-white" />
-                   </div>
-                   <h5 className="font-bold text-blue-800 text-lg md:text-xl">效果邏輯 (Effectuation)</h5>
-                </div>
-                <p className="text-sm md:text-base text-blue-900 font-medium leading-relaxed mb-4">
-                  盤點現有手段 → 創造機會 → 控制風險
-                </p>
-             </div>
+        </div>
+      </section>
 
-             <div className="bg-green-50 p-6 md:p-8 rounded-3xl text-left border border-green-100 shadow-sm">
-                <div className="flex items-center mb-4">
-                   <div className="bg-green-600 p-2 rounded-xl mr-3">
-                      <Target className="w-5 h-5 text-white" />
-                   </div>
-                   <h5 className="font-bold text-green-800 text-lg md:text-xl">因果邏輯 (Causation)</h5>
-                </div>
-                <p className="text-sm md:text-base text-green-900 font-medium leading-relaxed mb-4">
-                  預測未來 → 設定目標 → 尋找資源
-                </p>
-             </div>
-          </div>
-       </div>
-
-       <GroupMatrix />
-
-       <div className="max-w-5xl mx-auto mt-16 md:mt-24 px-4 pb-12">
-          <div className="flex items-center justify-between mb-8">
-             <h4 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center">
-               <Video className="w-6 h-6 mr-2 text-emerald-600" />
-               實作與訪談紀錄
-             </h4>
-             <span className="text-xs md:text-sm text-emerald-600 font-bold bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100">Live 現場紀錄中</span>
-          </div>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
-             {videoList.map((video, i) => (
+      <section className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* Theory Column */}
+          <div className="space-y-6">
+            <h3 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center"><BookOpen className="w-8 h-8 mr-4 text-blue-600" />核心理論：因果與效果邏輯</h3>
+            <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 p-6 md:p-8 flex flex-col h-full">
+              <div className="flex-1 flex flex-col items-center justify-center">
                 <div 
-                  key={i} 
-                  onClick={() => video.id && setSelectedVideoId(video.id)}
-                  className={`aspect-[9/16] rounded-2xl flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 border-2 shadow-sm
-                    ${video.id 
-                      ? 'bg-emerald-950 cursor-pointer hover:scale-[1.03] shadow-lg border-emerald-500/50 hover:border-emerald-400' 
-                      : 'bg-gray-100 opacity-60 border-dashed border-gray-300 grayscale'
-                    }`}
+                  className="cursor-zoom-in relative group rounded-2xl overflow-hidden"
+                  onClick={() => setZoomedImageUrl(SESSION_3_CONTENT.images.theory)}
                 >
-                   {/* Thumbnail Overlay */}
-                   <div className="absolute inset-0 z-0">
-                      <img 
-                        src={video.thumbnail} 
-                        alt={video.title} 
-                        className={`w-full h-full object-cover transition-opacity duration-500 ${video.id ? 'opacity-40' : 'opacity-10'}`} 
-                      />
-                   </div>
-
-                   {video.id ? (
-                      <div className="flex flex-col items-center p-4 text-white text-center z-10">
-                         <div className="bg-emerald-500 p-3 rounded-full mb-3 shadow-lg group-hover:bg-emerald-400 transition-colors">
-                            <MonitorPlay className="w-8 h-8 text-white drop-shadow-md" />
-                         </div>
-                         <span className="text-xs font-bold mb-1 drop-shadow-md">{video.title}</span>
-                         <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full">點擊播放</span>
-                      </div>
-                   ) : (
-                      <div className="flex flex-col items-center p-4 text-gray-400 z-10">
-                         <Clock className="w-8 h-8 mb-2 opacity-50" />
-                         <span className="text-[10px] font-bold">{video.status}</span>
-                      </div>
-                   )}
+                  <img src={SESSION_3_CONTENT.images.theory} alt="Causation and Effectuation Theory Diagram" className="max-w-full h-auto rounded-2xl shadow-lg border border-gray-100 transition-transform group-hover:scale-[1.02]" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                    <Sparkles className="text-white opacity-0 group-hover:opacity-100 w-10 h-10 drop-shadow-md" />
+                  </div>
                 </div>
-             ))}
+                <p className="mt-8 text-gray-600 font-bold text-base md:text-lg text-center italic">「因果邏輯（Causation）強調以目標驅動手段；效果邏輯（Effectuation）則強調以現有手段創造目標。」 (點擊圖片放大)</p>
+              </div>
+            </div>
           </div>
-       </div>
 
-       <VideoModal 
-         isOpen={!!selectedVideoId} 
-         onClose={() => setSelectedVideoId('')} 
-         videoId={selectedVideoId} 
-       />
+          {/* Action Formula Column */}
+          <div className="space-y-6">
+            <h3 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center"><Sparkles className="w-8 h-8 mr-4 text-emerald-600" />行動實務核心：9個行動實務口訣</h3>
+            <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 p-6 md:p-8 flex flex-col h-full">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <div 
+                  className="cursor-zoom-in relative group rounded-2xl overflow-hidden"
+                  onClick={() => setZoomedImageUrl(SESSION_3_CONTENT.images.actionFormula)}
+                >
+                  <img src={SESSION_3_CONTENT.images.actionFormula} alt="Action Formula Diagram" className="max-w-full h-auto rounded-2xl shadow-lg border border-gray-100 transition-transform group-hover:scale-[1.02]" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                    <Sparkles className="text-white opacity-0 group-hover:opacity-100 w-10 h-10 drop-shadow-md" />
+                  </div>
+                </div>
+                <p className="mt-8 text-gray-600 font-bold text-base md:text-lg text-center italic">「將抽象邏輯轉化為具體行動，透過九大口訣讓策略在實踐中落地生根。」 (點擊圖片放大)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 mt-20 pt-8">
+        <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-10 flex items-center border-b-2 border-gray-100 pb-6"><Scale className="w-8 h-8 mr-4 text-amber-600" />五大原則的對照</h3>
+        {SESSION_3_CONTENT.principles.map(principle => renderPrincipleCard(principle))}
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4">
+        <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-8 flex items-center"><Flame className="w-8 h-8 mr-4 text-red-500" />實作成果：大家的美味結晶</h3>
+        <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 mb-16 relative group">
+           <img src={SESSION_3_CONTENT.images.products} alt="Finished Cooking Products" className="w-full h-auto object-cover transform transition-transform duration-1000 group-hover:scale-105" />
+           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+           <div className="absolute bottom-6 left-6 right-6 md:bottom-12 md:left-12 bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl max-w-lg border border-white/50">
+              <p className="text-gray-900 font-black text-lg md:text-2xl mb-2">「從零到一，共同創造」</p>
+              <p className="text-gray-600 font-bold text-sm md:text-base leading-relaxed">在這個充滿煙火氣的實驗室中，每一道菜都是決策邏輯的實踐，也是團隊共識的展現。</p>
+           </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 bg-gray-900 rounded-[48px] p-10 md:p-16 shadow-2xl text-white relative overflow-hidden">
+        <div className="relative z-10">
+          <h3 className="text-2xl md:text-4xl font-black mb-16 text-center tracking-tight">企業生命週期的策略光譜</h3>
+          <div className="space-y-12">
+            {SESSION_3_CONTENT.lifecycle.map((stage, idx) => (
+              <div key={idx} className="flex flex-col md:flex-row gap-8 items-start bg-white/5 p-8 md:p-12 rounded-[32px] border border-white/10 hover:bg-white/10 transition-all shadow-xl group">
+                <div className="bg-emerald-500 p-5 rounded-2xl shadow-xl shrink-0 group-hover:scale-110 transition-transform">
+                  {idx === 0 ? <Flame className="w-8 h-8" /> : idx === 1 ? <TrendingUp className="w-8 h-8" /> : <Globe className="w-8 h-8" />}
+                </div>
+                <div className="flex-1">
+                   <div className="flex flex-wrap items-center gap-6 mb-5">
+                      <h4 className="text-2xl md:text-3xl font-black tracking-tight">{stage.title}</h4>
+                      <span className="bg-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-full text-sm md:text-base font-black border border-emerald-500/30 tracking-widest uppercase">{stage.logic}</span>
+                   </div>
+                   <p className="text-emerald-100 font-bold mb-5 italic text-lg md:text-xl leading-relaxed border-l-4 border-emerald-500/50 pl-6">情境：{stage.context}</p>
+                   <p className="text-gray-300 leading-relaxed text-base md:text-lg font-bold"><span className="text-emerald-400 font-black mr-3 uppercase tracking-widest text-sm">策略重點</span>{stage.strategy}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* New Field Notes Section */}
+      <section className="max-w-6xl mx-auto px-4 py-20">
+        <div className="bg-emerald-700 text-white px-8 py-4 rounded-t-3xl shadow-lg inline-flex items-center mb-10">
+          <PenTool className="w-6 h-6 mr-3" />
+          <h3 className="text-xl md:text-2xl font-black tracking-widest">【田野筆記：策略長們的廚房實踐】</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {SESSION_3_FIELD_NOTES.map((note) => (
+            <div key={note.id} className="bg-white rounded-[32px] p-8 md:p-10 shadow-xl border border-gray-100 flex flex-col hover:shadow-2xl transition-all group">
+              <div className="flex items-center mb-6">
+                <div className="bg-emerald-50 p-4 rounded-2xl mr-4 group-hover:bg-emerald-100 transition-colors">
+                  <span className="text-emerald-700 font-black text-xl">{note.id}.</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-black text-gray-900">{note.student}</h4>
+                  <p className="text-emerald-600 font-bold text-sm tracking-widest">{note.title}</p>
+                </div>
+              </div>
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed font-medium whitespace-pre-wrap border-l-4 border-emerald-100 pl-6 py-2">
+                {note.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* New Field Record Gallery Section */}
+      <section className="max-w-6xl mx-auto px-4 pb-20">
+        <div className="bg-emerald-100 text-emerald-800 px-8 py-4 rounded-t-3xl shadow-sm inline-flex items-center mb-10 border border-emerald-200">
+          <Camera className="w-6 h-6 mr-3" />
+          <h3 className="text-xl md:text-2xl font-black tracking-widest uppercase">課程現場紀實</h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {SESSION_3_CONTENT.gallery.map((imgUrl, i) => (
+            <div 
+              key={i} 
+              className="aspect-square rounded-2xl overflow-hidden shadow-md cursor-zoom-in group relative border border-gray-100"
+              onClick={() => setZoomedImageUrl(imgUrl)}
+            >
+              <img 
+                src={imgUrl} 
+                alt={`Field Record ${i + 1}`} 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                <Sparkles className="text-white opacity-0 group-hover:opacity-100 w-8 h-8 drop-shadow-md" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto px-4 pb-16 text-center">
+         <a href="https://ndhuemba1221.mystrikingly.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-emerald-600 hover:bg-emerald-700 text-white font-black px-10 py-5 rounded-full shadow-xl transition-all hover:scale-105 active:scale-95 text-base md:text-lg group">
+           <ImageIcon className="w-6 h-6 mr-4 group-hover:rotate-12 transition-transform" />活動紀錄網頁
+         </a>
+      </section>
+      
+      <VideoModal isOpen={!!selectedVideoId} onClose={() => setSelectedVideoId('')} videoId={selectedVideoId} />
+      <ImageModal isOpen={!!zoomedImageUrl} onClose={() => setZoomedImageUrl('')} imageUrl={zoomedImageUrl} />
     </div>
   );
 };
@@ -638,63 +652,37 @@ function App() {
   const [activeSession, setActiveSession] = useState<string>('session-1');
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-gray-900 bg-gray-50">
+    <div className="min-h-screen flex flex-col font-sans text-gray-900 bg-gray-50 overflow-x-hidden">
       <Header />
       <Hero />
-
-      <main className="container mx-auto px-4 py-4 md:py-12 -mt-6 md:-mt-10 relative z-20">
-        <div className="flex overflow-x-auto no-scrollbar md:grid md:grid-cols-3 gap-4 mb-6 md:mb-10 pb-4 snap-x px-2">
+      <main className="container mx-auto px-4 py-8 md:py-12 -mt-10 md:mt-[-5rem] relative z-20">
+        <div className="flex overflow-x-auto no-scrollbar md:grid md:grid-cols-3 gap-6 mb-12 px-2 pb-8">
           {SESSIONS.map((session) => {
             const isActive = activeSession === session.id;
             return (
-              <button
-                key={session.id}
-                onClick={() => setActiveSession(session.id)}
-                className={`text-left p-5 md:p-6 rounded-2xl transition-all duration-300 border-2 relative overflow-hidden group shrink-0 w-[85%] md:w-full snap-center
-                  ${isActive 
-                    ? 'bg-white border-wiskey-red shadow-xl transform scale-[1.02]' 
-                    : 'bg-white/90 border-transparent hover:border-gray-200 shadow-md hover:shadow-lg'
-                  }
-                `}
-              >
-                <div className={`absolute top-0 right-0 p-1.5 md:p-2 text-[8px] md:text-xs font-bold uppercase tracking-wide
-                   ${isActive ? 'bg-wiskey-red text-white' : 'bg-gray-100 text-gray-500'} rounded-bl-lg`}>
-                   {session.status}
-                </div>
-                <div className="mb-1 md:mb-2 flex items-center text-[10px] md:text-sm font-medium text-gray-500">
-                   <Clock className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                   {session.date}
-                   <span className="mx-2 md:mx-2">•</span>
-                   {session.format === '線上' ? <MonitorPlay className="w-3 h-3 md:w-4 md:h-4 mr-1"/> : <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-1"/>}
-                   {session.format}
-                </div>
-                <h3 className={`text-base md:text-lg font-bold mb-1 md:mb-2 ${isActive ? 'text-wiskey-red' : 'text-gray-800'}`}>
-                  {session.title}
-                </h3>
-                <div className={`h-1.5 w-10 md:w-12 rounded mt-3 md:mt-4 transition-all duration-500 ${isActive ? 'w-full bg-wiskey-red' : 'bg-gray-200 group-hover:w-24'}`}></div>
+              <button key={session.id} onClick={() => setActiveSession(session.id)} className={`text-left p-8 rounded-[32px] transition-all border-4 relative overflow-hidden group shrink-0 w-[85%] md:w-full shadow-lg ${isActive ? 'bg-white border-wiskey-red scale-[1.03] z-10 shadow-2xl' : 'bg-white/95 border-transparent hover:border-gray-200'}`}>
+                <div className="mb-3 flex items-center text-sm font-bold text-gray-500"><Clock className="w-4 h-4 mr-2" />{session.date}</div>
+                <h3 className={`text-lg md:text-xl font-black leading-tight ${isActive ? 'text-wiskey-red' : 'text-gray-900'}`}>{session.title}</h3>
+                <div className={`h-2.5 w-16 rounded-full mt-5 transition-all duration-700 ${isActive ? 'w-full bg-wiskey-red' : 'bg-gray-200 group-hover:bg-gray-300'}`}></div>
               </button>
             );
           })}
         </div>
-
-        <div className="min-h-[500px]">
+        <div className="min-h-[600px]">
            {activeSession === 'session-1' && <SessionOneDetail />}
            {activeSession === 'session-2' && <SessionTwoDetail />}
            {activeSession === 'session-3' && <SessionThreeDetail />}
         </div>
       </main>
-
-      <footer className="bg-wiskey-dark text-white py-6 md:py-8 mt-auto">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex justify-center items-center mb-2 md:mb-4 space-x-2">
-             <Award className="w-4 h-4 md:w-5 md:h-5 text-amber-500" />
-             <span className="font-bold text-xs md:text-base">National Dong Hwa University EMBA</span>
-          </div>
-          <p className="text-[10px] md:text-sm text-gray-400">
-            &copy; 2025 當代企業策略課程紀錄 | 陳建男 教授、林益全 教授
-          </p>
+      <footer className="bg-wiskey-dark text-white py-12 mt-auto text-center shadow-inner relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <Award className="w-8 h-8 text-amber-500 mx-auto mb-4 opacity-80" />
+          <span className="font-bold text-lg tracking-widest block mb-1 uppercase">NATIONAL DONG HWA UNIVERSITY EMBA</span>
+          <p className="text-gray-300 text-sm md:text-base font-medium">當代企業策略課程紀錄：陳建男 教授、林益全 教授</p>
         </div>
       </footer>
+      <BackToTopButton />
     </div>
   );
 }
