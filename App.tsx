@@ -266,7 +266,7 @@ const SessionOneDetail = () => {
              <h4 className="text-red-200 font-bold text-sm md:text-base mb-3 tracking-widest uppercase flex items-center opacity-80">
                <MonitorPlay className="w-4 h-4 mr-2" /> Multidimensional Thinking
              </h4>
-             <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">多面向思維>多面ㄒㄧ
+             <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">多面向思維</h3>
              <p className="text-white text-lg md:text-xl font-bold mb-6 border-l-4 border-amber-500 pl-5 py-1 bg-white/5 rounded-r-lg">未來領導者的AI與地緣政治思考模式</p>
              <p className="text-gray-200 text-base md:text-lg leading-relaxed font-medium italic opacity-90">「在全球政經秩序劇烈轉型、生成式AI迅速演化的今天，未來領導者所需要的不僅是單一學科的知識，更是能穿梭不同領域、看懂趨勢、提出解方的多元思維與實踐能力。」</p>
           </div>
