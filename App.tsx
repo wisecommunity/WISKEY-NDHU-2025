@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SESSIONS, REFLECTIONS, TOUCH_CATEGORIES, TOUCH_CATEGORIES_SESSION_2, COOKING_GROUPS, SESSION_3_CONTENT, SESSION_3_FIELD_NOTES } from './constants';
 import { SessionStatus } from './types';
 import { 
@@ -35,7 +35,8 @@ import {
   Sparkles,
   PenTool,
   ArrowUp,
-  Camera
+  Camera,
+  ExternalLink
 } from 'lucide-react';
 
 const Header = () => (
@@ -75,6 +76,9 @@ const Hero = () => (
 
 const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: () => void, videoId: string }) => {
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Fix: Changed NodeJS.Timeout to ReturnType<typeof setTimeout> to resolve the namespace error in the browser environment.
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -82,33 +86,61 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: ()
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = `${scrollBarWidth}px`;
       setIsLoading(true);
+
+      // Fallback: If iframe doesn't trigger onLoad within 8 seconds (common with Google Drive blocks), hide the spinner
+      timeoutRef.current = setTimeout(() => {
+        setIsLoading(false);
+      }, 8000);
     } else {
       document.body.style.overflow = 'auto';
       document.body.style.paddingRight = '0px';
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
+  const driveLink = `https://drive.google.com/file/d/${videoId}/view`;
+
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-4 md:p-10 animate-fade-in backdrop-blur-md" onClick={onClose}>
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/95 p-4 md:p-10 animate-fade-in backdrop-blur-md" onClick={onClose}>
       <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white p-2 z-[10001] bg-white/10 rounded-full transition-all hover:rotate-90">
         <X className="w-8 h-8" />
       </button>
-      <div className="relative w-full max-w-5xl rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/20 aspect-video flex items-center justify-center" onClick={e => e.stopPropagation()}>
+      
+      <div className="relative w-full max-w-5xl rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/20 aspect-video flex items-center justify-center bg-gray-900" onClick={e => e.stopPropagation()}>
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 z-10 space-y-4">
             <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
+            <p className="text-white/60 text-sm font-medium animate-pulse">正在從 Google Drive 載入影片...</p>
           </div>
         )}
         <iframe
           key={videoId}
-          src={`https://drive.google.com/file/d/${videoId}/preview?autoplay=1`}
+          src={`https://drive.google.com/file/d/${videoId}/preview`}
           className="w-full h-full border-none rounded-xl"
           allow="autoplay; fullscreen; accelerometer; encrypted-media; gyroscope; picture-in-picture"
-          onLoad={() => setIsLoading(false)}
+          onLoad={() => {
+            setIsLoading(false);
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          }}
           title="Video Content"
+          loading="lazy"
+          allowFullScreen
         />
+      </div>
+
+      <div className="mt-6 flex flex-col items-center space-y-3" onClick={e => e.stopPropagation()}>
+        <p className="text-white/40 text-xs md:text-sm italic">若影片無法在此處播放，請點擊下方按鈕直接開啟</p>
+        <a 
+          href={driveLink} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center bg-white/10 hover:bg-white/20 text-white px-6 py-2.5 rounded-full border border-white/20 transition-all font-bold text-sm group"
+        >
+          <ExternalLink className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+          在 Google 雲端硬碟中開啟影片
+        </a>
       </div>
     </div>
   );
