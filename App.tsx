@@ -103,7 +103,7 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: ()
         )}
         <iframe
           key={videoId}
-          src={`https://drive.google.com/file/d/${videoId}/preview`}
+          src={`https://drive.google.com/file/d/${videoId}/preview?autoplay=1`}
           className="w-full h-full border-none rounded-xl"
           allow="autoplay; fullscreen; accelerometer; encrypted-media; gyroscope; picture-in-picture"
           onLoad={() => setIsLoading(false)}
@@ -236,7 +236,7 @@ const SessionOneDetail = () => {
              </h4>
              <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">探索策略的多維度空間</h3>
              <p className="text-white text-lg md:text-xl font-bold mb-6 border-l-4 border-amber-500 pl-5 py-1 bg-white/5 rounded-r-lg">從度化智能到生命樂章</p>
-             <p className="text-gray-200 text-base md:text-lg leading-relaxed font-medium italic opacity-90">「策略不只是選擇，更是對世界多重因果關係的深刻洞察。」</p>
+             <p className="text-gray-200 text-base md:text-lg leading-relaxed font-medium italic opacity-90">「策略不只是選擇，更是對 world 多重因果關係的深刻洞察。」</p>
           </div>
         </div>
       </section>
@@ -478,10 +478,13 @@ const SessionThreeDetail = () => {
             <h3 className="text-3xl md:text-5xl font-black text-gray-900 mb-5 leading-tight tracking-tight">決策實務與度化智能</h3>
             <p className="text-base md:text-xl text-gray-600 leading-relaxed font-bold opacity-80 mb-10">透過烹飪實作中的動態競爭，進行因果與效果邏輯的決策分析。</p>
             
-            <div className="relative rounded-[40px] overflow-hidden shadow-2xl border-8 border-white group">
+            <div 
+              className="relative rounded-[40px] overflow-hidden shadow-2xl border-8 border-white group cursor-zoom-in"
+              onClick={() => setZoomedImageUrl(SESSION_3_CONTENT.images.group)}
+            >
                <img src={SESSION_3_CONTENT.images.group} alt="Course Group Photo" className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105" />
                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
-                  <p className="text-white font-bold text-lg md:text-xl">「夥伴選擇是策略落地的第一步」— 課程合影</p>
+                  <p className="text-white font-bold text-lg md:text-xl">「夥伴選擇是策略落地的第一步」— 課程合影 (點擊放大)</p>
                </div>
             </div>
          </div>
@@ -548,10 +551,10 @@ const SessionThreeDetail = () => {
 
       <section className="max-w-6xl mx-auto px-4">
         <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-8 flex items-center"><Flame className="w-8 h-8 mr-4 text-red-500" />實作成果：大家的美味結晶</h3>
-        <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 mb-16 relative group">
+        <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 mb-16 flex flex-col relative group">
            <img src={SESSION_3_CONTENT.images.products} alt="Finished Cooking Products" className="w-full h-auto object-cover transform transition-transform duration-1000 group-hover:scale-105" />
-           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
-           <div className="absolute bottom-6 left-6 right-6 md:bottom-12 md:left-12 bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl max-w-lg border border-white/50">
+           <div className="absolute inset-0 hidden md:block bg-black/20 group-hover:bg-black/0 transition-colors pointer-events-none"></div>
+           <div className="relative md:absolute bottom-0 md:bottom-12 md:left-12 bg-white md:bg-white/90 backdrop-blur-md p-6 md:p-10 rounded-b-[40px] md:rounded-3xl shadow-xl md:max-w-lg border-t md:border border-gray-100 md:border-white/50">
               <p className="text-gray-900 font-black text-lg md:text-2xl mb-2">「從零到一，共同創造」</p>
               <p className="text-gray-600 font-bold text-sm md:text-base leading-relaxed">在這個充滿煙火氣的實驗室中，每一道菜都是決策邏輯的實踐，也是團隊共識的展現。</p>
            </div>
@@ -581,7 +584,7 @@ const SessionThreeDetail = () => {
         </div>
       </section>
 
-      {/* New Field Notes Section */}
+      {/* Field Notes Section */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="bg-emerald-700 text-white px-8 py-4 rounded-t-3xl shadow-lg inline-flex items-center mb-10">
           <PenTool className="w-6 h-6 mr-3" />
@@ -607,7 +610,7 @@ const SessionThreeDetail = () => {
         </div>
       </section>
 
-      {/* New Field Record Gallery Section */}
+      {/* Field Record Gallery Section */}
       <section className="max-w-6xl mx-auto px-4 pb-20">
         <div className="bg-emerald-100 text-emerald-800 px-8 py-4 rounded-t-3xl shadow-sm inline-flex items-center mb-10 border border-emerald-200">
           <Camera className="w-6 h-6 mr-3" />
