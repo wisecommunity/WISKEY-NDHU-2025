@@ -39,10 +39,10 @@ import {
 } from 'lucide-react';
 
 const Header = () => (
-  <header className="bg-wiskey-red text-white sticky top-0 z-50 shadow-md">
+  <header className="bg-wiskey-red/80 backdrop-blur-xl text-white fixed top-0 left-0 right-0 z-[100] shadow-xl border-b border-white/10 transition-all duration-300">
     <div className="container mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row justify-between items-center">
       <div className="flex items-center space-x-3 mb-2 md:mb-0">
-        <div className="bg-white p-1.5 rounded-lg">
+        <div className="bg-white p-1.5 rounded-lg shadow-inner">
            <img 
               src="https://drive.google.com/thumbnail?id=1NoLl1tjoWKmIDKy1fPbo_UhY6WWDkzQq&sz=w1000" 
               alt="Course Logo" 
@@ -51,18 +51,18 @@ const Header = () => (
         </div>
         <div>
           <h1 className="text-lg md:text-xl font-bold tracking-tight">當代企業策略</h1>
-          <p className="text-sm text-red-100 opacity-90 font-medium">東華大學 EMBA | 陳建男、林益全 教授</p>
+          <p className="text-sm text-red-100 opacity-90 font-medium tracking-wide">東華大學 EMBA | 陳建男、林益全 教授</p>
         </div>
       </div>
-      <div className="flex items-center space-x-4 text-sm md:text-base font-semibold">
-         <span className="flex items-center"><BrainCircuit className="w-5 h-5 mr-2 text-red-200"/> 度化智能 Evolving Intelligence</span>
+      <div className="flex items-center space-x-4 text-xs md:text-sm font-bold bg-white/10 px-4 py-2 rounded-full border border-white/20">
+         <span className="flex items-center uppercase tracking-widest"><BrainCircuit className="w-4 h-4 mr-2 text-red-200"/> 度化智能 Evolving Intelligence</span>
       </div>
     </div>
   </header>
 );
 
 const Hero = () => (
-  <div className="bg-gradient-to-br from-wiskey-dark to-wiskey-red text-white py-12 md:py-24 relative overflow-hidden">
+  <div className="bg-gradient-to-br from-wiskey-dark to-wiskey-red text-white pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden">
     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
     <div className="container mx-auto px-4 relative z-10 text-center">
       <h2 className="text-2xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tight leading-tight">不確定環境下的決策與領導</h2>
@@ -91,26 +91,24 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean, onClose: ()
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 md:p-10 animate-fade-in backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-4 md:p-10 animate-fade-in backdrop-blur-md" onClick={onClose}>
       <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white p-2 z-[10001] bg-white/10 rounded-full transition-all hover:rotate-90">
         <X className="w-8 h-8" />
       </button>
-      <div className="relative w-full max-w-5xl bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10 flex flex-col justify-center" onClick={e => e.stopPropagation()}>
+      <div className="relative w-full max-w-5xl rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/20 aspect-video flex items-center justify-center" onClick={e => e.stopPropagation()}>
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
             <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
           </div>
         )}
-        <div className="relative w-full pt-[56.25%]">
-          <iframe
-            key={videoId}
-            src={`https://drive.google.com/file/d/${videoId}/preview?autoplay=1`}
-            className="absolute top-0 left-0 w-full h-full border-none"
-            allow="autoplay; fullscreen"
-            onLoad={() => setIsLoading(false)}
-            title="Video Content"
-          />
-        </div>
+        <iframe
+          key={videoId}
+          src={`https://drive.google.com/file/d/${videoId}/preview`}
+          className="w-full h-full border-none rounded-xl"
+          allow="autoplay; fullscreen; accelerometer; encrypted-media; gyroscope; picture-in-picture"
+          onLoad={() => setIsLoading(false)}
+          title="Video Content"
+        />
       </div>
     </div>
   );
@@ -407,7 +405,7 @@ const SessionThreeDetail = () => {
   const [zoomedImageUrl, setZoomedImageUrl] = useState<string>('');
 
   const renderPrincipleCard = (principle: any) => (
-    <div key={principle.id} className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden mb-10 animate-fade-in">
+    <div key={principle.id} className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden mb-6 md:mb-10 animate-fade-in">
       <div className="bg-gray-50 border-b border-gray-100 p-6 md:p-10">
         <h4 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">{principle.title}</h4>
         <p className="text-gray-600 italic text-sm md:text-base font-semibold">{principle.dimension}</p>
@@ -504,10 +502,10 @@ const SessionThreeDetail = () => {
       <section className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Theory Column */}
-          <div className="space-y-6">
+          <div className="flex flex-col space-y-6">
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center"><BookOpen className="w-8 h-8 mr-4 text-blue-600" />核心理論：因果與效果邏輯</h3>
-            <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 p-6 md:p-8 flex flex-col h-full">
-              <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 p-6 md:p-8 flex flex-col flex-1">
+              <div className="flex flex-col items-center justify-center h-full">
                 <div 
                   className="cursor-zoom-in relative group rounded-2xl overflow-hidden"
                   onClick={() => setZoomedImageUrl(SESSION_3_CONTENT.images.theory)}
@@ -523,10 +521,10 @@ const SessionThreeDetail = () => {
           </div>
 
           {/* Action Formula Column */}
-          <div className="space-y-6">
+          <div className="flex flex-col space-y-6 mt-10 lg:mt-0">
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center"><Sparkles className="w-8 h-8 mr-4 text-emerald-600" />行動實務核心：9個行動實務口訣</h3>
-            <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 p-6 md:p-8 flex flex-col h-full">
-              <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="bg-white rounded-[40px] shadow-xl overflow-hidden border border-gray-100 p-6 md:p-8 flex flex-col flex-1">
+              <div className="flex flex-col items-center justify-center h-full">
                 <div 
                   className="cursor-zoom-in relative group rounded-2xl overflow-hidden"
                   onClick={() => setZoomedImageUrl(SESSION_3_CONTENT.images.actionFormula)}
@@ -543,7 +541,7 @@ const SessionThreeDetail = () => {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 mt-20 pt-8">
+      <section className="max-w-6xl mx-auto px-4 mt-12 md:mt-20">
         <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-10 flex items-center border-b-2 border-gray-100 pb-6"><Scale className="w-8 h-8 mr-4 text-amber-600" />五大原則的對照</h3>
         {SESSION_3_CONTENT.principles.map(principle => renderPrincipleCard(principle))}
       </section>
